@@ -6,6 +6,14 @@ from termcolor import colored
 spell = SpellChecker()
 import random
 
+#TODO
+# Búa til menu, play eða edit
+# Leyfa logins, profiles
+# Geyma scores með profile name í txt skjali
+# Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk
+# Giska rett í síðasta en fæ you lose
+
+
 green_guessed_letters = []
 yellow_guessed_letters = []
 
