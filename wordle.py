@@ -160,8 +160,8 @@ def play_again():
 """ ---------- MAIN PROGRAM ----------"""
 def main():
     print_header()
-    correct_word = generate_word()
-    # correct_word = "shyly"
+    #correct_word = generate_word()
+    correct_word = "shyly"
     guess_counter = 6
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -181,12 +181,19 @@ def main():
         else:
             pass
     else:
-        print(colored("YOU LOSE! SORRY", 'red'))
-        print(f"The correct word was '{correct_word}'")
-        if play_again():
-            return True
+        if win_check(guess_word, correct_word):
+            print(colored("YOU WON! GOOD JOB!", 'green'))
+            if play_again():
+                return True
+            else:
+                return False
         else:
-            return False
+            print(colored("YOU LOSE! SORRY", 'red'))
+            print(f"The correct word was '{correct_word}'")
+            if play_again():
+                return True
+            else:
+                return False
 
 
 
