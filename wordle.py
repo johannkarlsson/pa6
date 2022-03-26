@@ -20,12 +20,16 @@ WELCOME TO WORDLE - PYTHON EDITION
 """
     print(header)
 
-def generate_word():
-    """ Generate a 5 letter wordle from text file """
+def get_word_list():
     with open("wordlist.txt", "r") as file:
         allText = file.read()
         words = list(map(str, allText.split()))
-        return (random.choice(words))
+        return words
+
+def generate_word():
+    """ Generate a 5 letter wordle from text file """
+    word_list = get_word_list()
+    return (random.choice(word_list))
 
 def get_input():
     """ Get user input """
