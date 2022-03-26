@@ -168,8 +168,8 @@ def play_again():
 """ ---------- MAIN PROGRAM ----------"""
 def main():
     print_header()
-    #correct_word = generate_word()
-    correct_word = "shyly"
+    correct_word = generate_word()
+    #correct_word = "shyly"
     guess_counter = 6
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
