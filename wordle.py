@@ -19,9 +19,6 @@ spell = SpellChecker()
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
 # Giska rett í síðasta en fæ you lose
 
-# CONSTANTS
-# MAX_GUESSES = 5 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
-
 # GLOBALS
 glob_guesses = 6
 glob_letters = 5
@@ -75,7 +72,7 @@ def load_wordle(profile):
     print('Logging in as ' + profile)
     animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
     for i in range(len(animation)):
-        time.sleep(0.2)
+        time.sleep(0.12)
         sys.stdout.write("\r" + animation[i % len(animation)])
         sys.stdout.flush()
     print("\n")
