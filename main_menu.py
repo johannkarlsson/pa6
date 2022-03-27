@@ -3,7 +3,7 @@ from os.path import exists
 import sys
 import time
 
-def main_menu_print():
+def print_main_menu():
     main_menu ="""
 ----------------------------------------------------------
 
@@ -16,7 +16,7 @@ def main_menu_print():
     print(main_menu)
 
 def main_menu_input():
-    main_menu_print()
+    print_main_menu()
     menu_input = input("Please select an option: ")
     if menu_input == "1":
         play_game()
@@ -76,8 +76,9 @@ def max_guesses_check(max_guesses):
     else:
         return False
 
-def play_game():
-    print('User chose 1')
+def play_option():
+    print('User chose 1 -- PLACEHOLDER DÓT')
+    print('Þarf ekkert þetta fall held ég, þetta er bara milliliður')
     login_profile()
 
 def login_profile(): # Spyr notanda um nafn hans til að búa til skrá

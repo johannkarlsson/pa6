@@ -1,10 +1,13 @@
-from threading import get_ident
-from spellchecker import SpellChecker
-import sys
 # from colorama import init
-from termcolor import colored
-spell = SpellChecker()
+from threading      import get_ident
+from spellchecker   import SpellChecker
+from os.path        import exists
+from termcolor      import colored
+import sys
+import os
+import time
 import random
+spell = SpellChecker()
 
 #TODO
 # Búa til menu, play eða edit
@@ -14,7 +17,7 @@ import random
 # Giska rett í síðasta en fæ you lose
 
 # CONSTANTS
-MAX_GUESSES = 6 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
+MAX_GUESSES = 5 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
 
 
 green_guessed_letters = []
@@ -31,6 +34,159 @@ WELCOME TO WORDLE - PYTHON EDITION
 """
     print(header)
 
+def print_main_menu():
+    main_menu ="""
+----------------------------------------------------------
+
+                        MAIN MENU
+
+1. Play     2. Add Words     3. Edit Game         4. Quit
+
+----------------------------------------------------------
+"""
+    print(main_menu)
+
+def main_menu():
+    print_main_menu()
+    menu_input = input("Please select an option: ")
+    if menu_input == "1":
+        play_option()
+    elif menu_input == "2":
+        add_option()
+    elif menu_input == "3":
+        edit_option()
+    elif menu_input == "4":
+        return
+    else:
+        print("Please enter a valid input")
+        main_menu()
+
+""" ----------- FUN STUFF ------------- """
+def load_wordle(profile):
+    '''ANIMATION FUNCTION'''
+    print('Logging in as ' + profile)
+    animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
+    for i in range(len(animation)):
+        time.sleep(0.2)
+        sys.stdout.write("\r" + animation[i % len(animation)])
+        sys.stdout.flush()
+    print("\n")
+    play_wordle(profile)
+
+def clear_console():
+    '''HELPER FUNCTION TO CLEAR SCREEN'''
+    command = 'clear'
+    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+        command = 'cls'
+    os.system(command)
+
+""" ----------- LOGIN ------------- """
+def play_option():
+    print('User chose 1 -- PLACEHOLDER DÓT')
+    print('Þarf ekkert þetta fall held ég, þetta er bara milliliður')
+    login_profile()
+
+def login_profile(): # Spyr notanda um nafn hans til að búa til skrá
+    profile = input("Please enter your profile name: ").upper()
+    create_player_file(profile)
+
+def create_player_file(profile):
+    '''Creates text files to store player scores'''
+    filename = profile + '.txt'         # Create full file name
+    directory = "player_profiles/"      # Create full file path
+    if not os.path.exists(directory):
+       os.makedirs(directory)
+    file_name_path = directory+filename
+    if exists(file_name_path):
+        f = open(file_name_path, 'w')   # Opens file in write mode
+        clear_console()
+        load_wordle(profile) 
+    else:
+        f = open(file_name_path, 'w')
+        clear_console()
+        print('Profile created!')
+        load_wordle(profile)
+
+""" ----------- ADD WORDS ------------- """
+def add_option():
+    print('What word would you like to append to the word bank?')
+    word_bank_input = input('Input word: ')
+    file = open('test_words.txt', 'a')
+    if duplicate_word_check(word_bank_input):
+        file.write(word_bank_input + '\n')
+        print(f'"{word_bank_input}" added to word bank')
+        file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
+        add_more_words()
+    else:
+        print('Word already in word bank')
+        add_more_words()
+
+def add_more_words():
+    prompt = input('Would you like to add another word? (y/n): ').lower()
+    if prompt == 'y':
+        add_option()
+    elif prompt == 'n':
+        main_menu()
+    else:
+        print('Please enter a valid input')
+        add_more_words()
+
+def duplicate_word_check(word):
+    with open('test_words.txt', 'r') as file:
+        words = file.read()
+    if word not in words:
+        return True
+    else:
+        return False
+
+""" ----------- EDIT OPTION ------------- """
+def edit_option():
+    '''Edit game calls on two other functions'''
+    max_guesses = edit_guesses()
+    word_letters = edit_letters()
+    return max_guesses, word_letters
+
+def edit_letters():
+    '''Edit length of word'''
+    word_letters = input('How many letters would you like to guess? (1-6): ')
+    if word_letters_check(word_letters):
+        return word_letters
+    else:
+        print('Please enter a valid input')
+        edit_letters()
+
+def edit_guesses():
+    '''Edit how many guesses'''
+    max_guesses = input('How many guesses would you like to have? (1-6): ')
+    if max_guesses_check(max_guesses):
+        return max_guesses
+    else:
+        print('Please enter a valid input')
+        edit_guesses()
+
+def word_letters_check(word_letters):
+    '''HELPER'''
+    '''Checks if word_letters is a digit between 1 and 6'''
+    if word_letters.isdigit():
+        if int(word_letters) > 0 and int(word_letters) < 7:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def max_guesses_check(max_guesses):
+    '''HELPER'''
+    '''Checks if max_guesses is a digit between 1 and 6'''
+    if max_guesses.isdigit():
+        if int(max_guesses) > 0 and int(max_guesses) < 7:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+""" ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
 def get_word_list():
     with open("wordlist.txt", "r") as file:
         allText = file.read()
@@ -78,13 +234,13 @@ def dictionary_check(guess_word):
 
 def print_guess_count(guess_counter):
     """ Print the current guess number in the appropriate color """
-    if (0.66 * MAX_GUESSES) <= guess_counter <= MAX_GUESSES: # Sama og 4/6, 5/6, 6/6
+    if (0.66 * MAX_GUESSES) <= guess_counter <= MAX_GUESSES:
         print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'green'))
 
-    elif (0.33 * MAX_GUESSES) <= guess_counter <= (0.5 * MAX_GUESSES):
+    elif (0.33 * MAX_GUESSES) <= guess_counter <= (0.66 * MAX_GUESSES):
         print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'yellow'))
 
-    if guess_counter == 1:
+    if (0.00 * MAX_GUESSES) <= guess_counter <= (0.33 * MAX_GUESSES):
         print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'red'))
 
 def guess(guess_word, correct_word):
@@ -123,7 +279,6 @@ def print_result(guess_word, correct_word):
             print(colored(f" {letter.upper()} ", 'white',), end='|')
     print()
     print("‾" * 21)
-
 
 def duplicate_letter_check(correct_word):
     """ Return a list of the duplicate letters of correct word"""
@@ -168,11 +323,9 @@ def play_again():
     if play_again == "n":
         return False
 
-
-
-""" ---------- MAIN PROGRAM ----------"""
-def main():
+def play_wordle(profile):
     print_header()
+    print('Logged in as: ' + profile)
     correct_word = generate_word()
     #correct_word = "shyly"
     guess_counter = MAX_GUESSES # Set the guess counter to max guesses
@@ -209,6 +362,10 @@ def main():
                 return False
 
 
+
+""" ---------- MAIN PROGRAM ----------"""
+def main():
+    main_menu()
 
 """ MAIN LOOP """
 while True:
