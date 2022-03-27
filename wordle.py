@@ -337,8 +337,8 @@ def play_wordle(profile):
     global glob_guesses
     print_header()
     print('Logged in as: ' + profile)
-    correct_word = generate_word()
-    #correct_word = "shyly"
+    # correct_word = generate_word()
+    correct_word = "shyly"
     guess_counter = glob_guesses # Max number of guesses
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -383,7 +383,6 @@ def write_score_to_file(profile, guess_counter, correct_word):
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     f = open(file_name_path, 'a')   # Opens file in append mode
     f.write(f"{dt_string}\nGuesses left: {guess_counter} Answer: {correct_word.upper()}\n")
-    f.close()
 
 
 
