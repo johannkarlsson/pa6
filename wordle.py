@@ -23,7 +23,7 @@ spell = SpellChecker()
 # MAX_GUESSES = 5 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
 
 # GLOBALS
-glob_guesses = 5
+glob_guesses = 6
 glob_letters = 5
 
 
@@ -64,7 +64,7 @@ def main_menu():
         edit_option()
         main_menu()
     elif menu_input == "4":
-        return
+        quit()
     else:
         print("Please enter a valid input!")
         main_menu()
@@ -154,13 +154,13 @@ def edit_option():
     global glob_guesses
     global glob_letters
     glob_guesses = edit_guesses()
-    glob_letters = edit_letters()
+    # glob_letters = edit_letters() # We don't wanna do this.
 
 def edit_guesses():
     '''Edit how many guesses'''
     max_guesses = input('How many guesses would you like to have? (1-6): ')
     if max_guesses_check(max_guesses):
-        return max_guesses
+        return int(max_guesses)
     else:
         print('Please enter a valid input')
         edit_guesses()
@@ -169,7 +169,7 @@ def edit_letters():
     '''Edit length of word'''
     word_letters = input('How many letters would you like to guess? (1-6): ')
     if word_letters_check(word_letters):
-        return word_letters
+        return int(word_letters)
     else:
         print('Please enter a valid input')
         edit_letters()
