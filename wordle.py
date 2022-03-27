@@ -15,8 +15,8 @@ spell = SpellChecker()
 # Búa til menu, play eða edit CHECK
 # Leyfa logins, profiles CHECK
 # Finna hvernig við score-um leikinn
-# Geyma scores með profile name í txt skjali
-# Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk
+# Geyma scores með profile name í txt skjali CHECK
+# Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
 # Giska rett í síðasta en fæ you lose
 
 # CONSTANTS
@@ -337,8 +337,8 @@ def play_wordle(profile):
     global glob_guesses
     print_header()
     print('Logged in as: ' + profile)
-    # correct_word = generate_word()
-    correct_word = "shyly"
+    correct_word = generate_word()
+    # correct_word = "shyly"
     guess_counter = glob_guesses # Max number of guesses
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
