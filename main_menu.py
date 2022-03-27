@@ -64,15 +64,12 @@ def create_player_file(profile): # Býr til skjal með profile name, hægt að s
         print('Logging in as ' + profile)
         load_wordle()
 
-
 def load_wordle():
     animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
-
     for i in range(len(animation)):
         time.sleep(0.2)
         sys.stdout.write("\r" + animation[i % len(animation)])
         sys.stdout.flush()
-
     print("\n")
     play_wordle()
 
@@ -83,13 +80,9 @@ def clear_console():
         command = 'cls'
     os.system(command)
 
-
 def play_wordle():
     clear_console()
     print('playing wordle hans jóa sæta')
-
-
-
 
 def add_more_words():
     prompt = input('Would you like to add another word? (y/n): ').lower()
