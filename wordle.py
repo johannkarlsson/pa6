@@ -106,11 +106,11 @@ def create_player_file(profile):
        os.makedirs(directory)
     file_name_path = directory+filename
     if exists(file_name_path):
-        f = open(file_name_path, 'w')   # Opens file in write mode
+        f = open(file_name_path, 'a')   # Opens file in write mode
         clear_console()
         load_wordle(profile) 
     else:
-        f = open(file_name_path, 'w')
+        f = open(file_name_path, 'a')
         clear_console()
         print('Profile created!')
         load_wordle(profile)
