@@ -1,8 +1,10 @@
 # from colorama import init
+from glob import glob
 from threading      import get_ident
 from spellchecker   import SpellChecker
 from os.path        import exists
 from termcolor      import colored
+from datetime       import datetime
 import sys
 import os
 import time
@@ -10,14 +12,19 @@ import random
 spell = SpellChecker()
 
 #TODO
-# Búa til menu, play eða edit
-# Leyfa logins, profiles
+# Búa til menu, play eða edit CHECK
+# Leyfa logins, profiles CHECK
+# Finna hvernig við score-um leikinn
 # Geyma scores með profile name í txt skjali
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk
 # Giska rett í síðasta en fæ you lose
 
 # CONSTANTS
-MAX_GUESSES = 5 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
+# MAX_GUESSES = 5 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
+
+# GLOBALS
+glob_guesses = 5
+glob_letters = 5
 
 
 green_guessed_letters = []
@@ -55,6 +62,7 @@ def main_menu():
         add_option()
     elif menu_input == "3":
         edit_option()
+        main_menu()
     elif menu_input == "4":
         return
     else:
@@ -80,7 +88,7 @@ def clear_console():
         command = 'cls'
     os.system(command)
 
-""" ----------- LOGIN ------------- """
+""" ----------- LOGIN OPTION ------------- """
 def play_option():
     print('User chose 1 -- PLACEHOLDER DÓT')
     print('Þarf ekkert þetta fall held ég, þetta er bara milliliður')
@@ -142,18 +150,10 @@ def duplicate_word_check(word):
 """ ----------- EDIT OPTION ------------- """
 def edit_option():
     '''Edit game calls on two other functions'''
-    max_guesses = edit_guesses()
-    word_letters = edit_letters()
-    return max_guesses, word_letters
-
-def edit_letters():
-    '''Edit length of word'''
-    word_letters = input('How many letters would you like to guess? (1-6): ')
-    if word_letters_check(word_letters):
-        return word_letters
-    else:
-        print('Please enter a valid input')
-        edit_letters()
+    global glob_guesses
+    global glob_letters
+    glob_guesses = edit_guesses()
+    glob_letters = edit_letters()
 
 def edit_guesses():
     '''Edit how many guesses'''
@@ -164,22 +164,31 @@ def edit_guesses():
         print('Please enter a valid input')
         edit_guesses()
 
-def word_letters_check(word_letters):
-    '''HELPER'''
-    '''Checks if word_letters is a digit between 1 and 6'''
-    if word_letters.isdigit():
-        if int(word_letters) > 0 and int(word_letters) < 7:
-            return True
-        else:
-            return False
+def edit_letters():
+    '''Edit length of word'''
+    word_letters = input('How many letters would you like to guess? (1-6): ')
+    if word_letters_check(word_letters):
+        return word_letters
     else:
-        return False
+        print('Please enter a valid input')
+        edit_letters()
 
 def max_guesses_check(max_guesses):
     '''HELPER'''
     '''Checks if max_guesses is a digit between 1 and 6'''
     if max_guesses.isdigit():
         if int(max_guesses) > 0 and int(max_guesses) < 7:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def word_letters_check(word_letters):
+    '''HELPER'''
+    '''Checks if word_letters is a digit between 1 and 6'''
+    if word_letters.isdigit():
+        if int(word_letters) > 0 and int(word_letters) < 7:
             return True
         else:
             return False
@@ -200,7 +209,7 @@ def generate_word():
 
 def get_input():
     """ Get user input """
-    guess_word = input("Enter your guess (5 letters): ")
+    guess_word = input("Enter your guess (5 letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
     return guess_word
 
 """ ----------- CHECKS ------------- """
@@ -234,14 +243,15 @@ def dictionary_check(guess_word):
 
 def print_guess_count(guess_counter):
     """ Print the current guess number in the appropriate color """
-    if (0.66 * MAX_GUESSES) <= guess_counter <= MAX_GUESSES:
-        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'green'))
+    global glob_guesses
+    if (0.66 * glob_guesses) <= guess_counter <= glob_guesses:
+        print(colored(f"GUESSES LEFT = {guess_counter}/{glob_guesses}",'green'))
 
-    elif (0.33 * MAX_GUESSES) <= guess_counter <= (0.66 * MAX_GUESSES):
-        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'yellow'))
+    elif (0.33 * glob_guesses) <= guess_counter <= (0.66 * glob_guesses):
+        print(colored(f"GUESSES LEFT = {guess_counter}/{glob_guesses}",'yellow'))
 
-    if (0.00 * MAX_GUESSES) <= guess_counter <= (0.33 * MAX_GUESSES):
-        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'red'))
+    if (0.00 * glob_guesses) <= guess_counter <= (0.33 * glob_guesses):
+        print(colored(f"GUESSES LEFT = {guess_counter}/{glob_guesses}",'red'))
 
 def guess(guess_word, correct_word):
     if input_check(guess_word):
@@ -311,7 +321,7 @@ def print_letters(letters):
 
 def win_check(guess_word, correct_word):
     """ Check if word matches and thus game is won """
-    if guess_word == correct_word:
+    if guess_word == correct_word.upper():
         return True
     return False
 
@@ -324,11 +334,12 @@ def play_again():
         return False
 
 def play_wordle(profile):
+    global glob_guesses
     print_header()
     print('Logged in as: ' + profile)
     correct_word = generate_word()
     #correct_word = "shyly"
-    guess_counter = MAX_GUESSES # Set the guess counter to max guesses
+    guess_counter = glob_guesses # Max number of guesses
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     while guess_counter != 0:
@@ -340,6 +351,7 @@ def play_wordle(profile):
             print_letters(letters)
             if win_check(guess_word, correct_word):
                 print(colored("YOU WON! GOOD JOB!", 'green'))
+                write_score_to_file(profile, guess_counter, correct_word)
                 if play_again():
                     return True
                 else:
@@ -349,6 +361,7 @@ def play_wordle(profile):
     else:
         if win_check(guess_word, correct_word):
             print(colored("YOU WON! GOOD JOB!", 'green'))
+            write_score_to_file(profile, guess_counter, correct_word)
             if play_again():
                 return True
             else:
@@ -360,6 +373,17 @@ def play_wordle(profile):
                 return True
             else:
                 return False
+
+def write_score_to_file(profile, guess_counter, correct_word):
+    '''Creates text files to store player scores'''
+    filename = profile + '.txt'         # Create full file name
+    directory = "player_profiles/"      # Create full file path
+    file_name_path = directory+filename
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    f = open(file_name_path, 'a')   # Opens file in append mode
+    f.write(f"{dt_string}\nGuesses left: {guess_counter} Answer: {correct_word.upper()}\n")
+    f.close()
 
 
 
