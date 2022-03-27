@@ -13,6 +13,9 @@ import random
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk
 # Giska rett í síðasta en fæ you lose
 
+# CONSTANTS
+MAX_GUESSES = 6 # PLACEHOLDER fyrir variable frá input úr edit game fallinu úr main menu
+
 
 green_guessed_letters = []
 yellow_guessed_letters = []
@@ -75,12 +78,14 @@ def dictionary_check(guess_word):
 
 def print_guess_count(guess_counter):
     """ Print the current guess number in the appropriate color """
-    if 4 <= guess_counter <= 6:
-        print(colored(f"GUESSES LEFT = {guess_counter}/6",'green'))
-    elif 2 <= guess_counter <= 3:
-        print(colored(f"GUESSES LEFT = {guess_counter}/6",'yellow'))
+    if (0.66 * MAX_GUESSES) <= guess_counter <= MAX_GUESSES: # Sama og 4/6, 5/6, 6/6
+        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'green'))
+
+    elif (0.33 * MAX_GUESSES) <= guess_counter <= (0.5 * MAX_GUESSES):
+        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'yellow'))
+
     if guess_counter == 1:
-        print(colored(f"GUESSES LEFT = {guess_counter}/6",'red'))
+        print(colored(f"GUESSES LEFT = {guess_counter}/{MAX_GUESSES}",'red'))
 
 def guess(guess_word, correct_word):
     if input_check(guess_word):
@@ -170,7 +175,7 @@ def main():
     print_header()
     correct_word = generate_word()
     #correct_word = "shyly"
-    guess_counter = 6
+    guess_counter = MAX_GUESSES # Set the guess counter to max guesses
     guess_word = None
     letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     while guess_counter != 0:
