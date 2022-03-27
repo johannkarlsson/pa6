@@ -31,12 +31,50 @@ def main_menu_input():
         main_menu_input()
 
 def edit_game():
-    max_guesses = input('How many guesses would you like to have? (1-6): ')
+    '''Edit game calls on two other functions'''
+    max_guesses = edit_guesses()
+    word_letters = edit_letters()
+    return max_guesses, word_letters
+
+def edit_letters():
+    '''Edit length of word'''
     word_letters = input('How many letters would you like to guess? (1-6): ')
+    if word_letters_check(word_letters):
+        return word_letters
+    else:
+        print('Please enter a valid input')
+        edit_letters()
 
+def edit_guesses():
+    '''Edit how many guesses'''
+    max_guesses = input('How many guesses would you like to have? (1-6): ')
+    if max_guesses_check(max_guesses):
+        return max_guesses
+    else:
+        print('Please enter a valid input')
+        edit_guesses()
 
-def change_max_guesses():
-    pass
+def word_letters_check(word_letters):
+    '''HELPER'''
+    '''Checks if word_letters is a digit between 1 and 6'''
+    if word_letters.isdigit():
+        if int(word_letters) > 0 and int(word_letters) < 7:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def max_guesses_check(max_guesses):
+    '''HELPER'''
+    '''Checks if max_guesses is a digit between 1 and 6'''
+    if max_guesses.isdigit():
+        if int(max_guesses) > 0 and int(max_guesses) < 7:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 def play_game():
     print('User chose 1')
@@ -46,14 +84,15 @@ def login_profile(): # Spyr notanda um nafn hans til að búa til skrá
     profile = input("Please enter your profile name: ").upper()
     create_player_file(profile)
 
-def create_player_file(profile): # Býr til skjal með profile name, hægt að setja scores þangað
-    filename = profile + '.txt'
-    directory = "player_profiles/"
+def create_player_file(profile):
+    '''Creates text files to store player scores'''
+    filename = profile + '.txt'         # Create full file name
+    directory = "player_profiles/"      # Create full file path
     if not os.path.exists(directory):
        os.makedirs(directory)
-
     file_name_path = directory+filename
     if exists(file_name_path):
+        f = open(file_name_path, 'w')   # Opens file in write mode
         clear_console()
         print('Logging in as ' + profile)
         load_wordle() 
@@ -65,6 +104,7 @@ def create_player_file(profile): # Býr til skjal með profile name, hægt að s
         load_wordle()
 
 def load_wordle():
+    '''ANIMATION FUNCTION'''
     animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
     for i in range(len(animation)):
         time.sleep(0.2)
