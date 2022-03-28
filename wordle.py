@@ -92,8 +92,8 @@ def play_option():
     login_profile()
 
 def login_profile(): # Spyr notanda um nafn hans til að búa til skrá
-    profile = input("Please enter your profile name: ").upper()
-    create_player_file(profile)
+    profile = input("Please enter your profile name: ")
+    create_player_file(profile.upper())
 
 def create_player_file(profile):
     '''Creates text files to store player scores'''
@@ -203,12 +203,13 @@ def get_word_list():
 def generate_word():
     """ Generate a 5 letter wordle from text file """
     word_list = get_word_list()
-    return (random.choice(word_list))
+    word = (random.choice(word_list))
+    return word.upper()
 
 def get_input():
     """ Get user input """
-    guess_word = input("Enter your guess (5 letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
-    return guess_word
+    guess_word = input("Enter your guess (5 letters): ") # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
+    return guess_word.upper()
 
 """ ----------- CHECKS ------------- """
 def input_check(guess_word):
@@ -267,24 +268,24 @@ def print_result(guess_word, correct_word):
     duplicates = duplicate_letter_check(correct_word)
 
     for index, letter in enumerate(guess_word):
-            if guess_word[index].upper() == correct_word[index].upper():
-                correct_letters_in_current_guess.append(letter.upper())
+            if guess_word[index] == correct_word[index]:
+                correct_letters_in_current_guess.append(letter)
 
     for index, letter in enumerate(guess_word):
-        if guess_word[index].upper() == correct_word[index].upper():
-            print(colored(f" {letter.upper()} ", 'white', 'on_green'), end = "|")
-            green_guessed_letters.append(guess_word[index].upper())
-            if guess_word[index].upper() not in duplicates:
-                already_printed.append(letter.upper())
+        if guess_word[index] == correct_word[index]:
+            print(colored(f" {letter} ", 'white', 'on_green'), end = "|")
+            green_guessed_letters.append(guess_word[index])
+            if guess_word[index] not in duplicates:
+                already_printed.append(letter)
 
-        elif letter.upper() in correct_word.upper() and letter.upper() not in already_printed and letter.upper() not in duplicates and letter.upper() not in correct_letters_in_current_guess:
-            print(colored(f" {letter.upper()} ", 'white', 'on_yellow'), end = "|")
-            already_printed.append(letter.upper())
-            yellow_guessed_letters.append(guess_word[index].upper())
-        # elif letter.upper() in correct_word.upper() and letter.upper() not in already_printed:
-        #     print(colored(f" {letter.upper()} ", 'white', 'on_yellow'), end = "|")
+        elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in correct_letters_in_current_guess:
+            print(colored(f" {letter} ", 'white', 'on_yellow'), end = "|")
+            already_printed.append(letter)
+            yellow_guessed_letters.append(guess_word[index])
+        # elif letter in correct_word and letter not in already_printed:
+        #     print(colored(f" {letter} ", 'white', 'on_yellow'), end = "|")
         else:
-            print(colored(f" {letter.upper()} ", 'white',), end='|')
+            print(colored(f" {letter} ", 'white',), end='|')
     print()
     print("‾" * 21)
 
@@ -294,15 +295,15 @@ def duplicate_letter_check(correct_word):
     duplicates = []
     for char in string:
         if string.count(char) > 1:
-            if char.upper() not in duplicates:
-                duplicates.append(char.upper())
+            if char not in duplicates:
+                duplicates.append(char)
     return duplicates
 
 def eliminate_letters(guess_word, letters, correct_word):
     """ Remove already used letters from the letter list """
     for letter in guess_word:
-        if letter.upper() in letters and letter.upper() not in correct_word:
-            letters.remove(letter.upper())
+        if letter in letters and letter not in correct_word:
+            letters.remove(letter)
     return letters
 
 def print_letters(letters):
@@ -310,16 +311,16 @@ def print_letters(letters):
     print("Available letters: ", end='')
     for letter in letters:
         if letter in green_guessed_letters:
-            print(colored(letter.upper(), 'green'), end= ' ')
+            print(colored(letter, 'green'), end= ' ')
         elif letter in yellow_guessed_letters:
-            print(colored(letter.upper(), 'yellow'), end= ' ')
+            print(colored(letter, 'yellow'), end= ' ')
         else:
-            print(letter.upper(), end=' ')
+            print(letter, end=' ')
     print()
 
 def win_check(guess_word, correct_word):
     """ Check if word matches and thus game is won """
-    if guess_word == correct_word.upper():
+    if guess_word == correct_word:
         return True
     return False
 
@@ -383,7 +384,7 @@ def write_score_to_file(profile, guess_counter, correct_word):
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     f = open(file_name_path, 'a')   # Opens file in append mode
-    f.write(f"{dt_string}\nGuesses left: {guess_counter} Answer: {correct_word.upper()}\n")
+    f.write(f"{dt_string}\nGuesses left: {guess_counter} Answer: {correct_word}\n")
 
 
 
