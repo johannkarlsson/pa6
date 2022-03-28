@@ -80,7 +80,7 @@ class MainMenu:
         if prompt == 'y':
             self.add_option()
         elif prompt == 'n':
-            self.clear_console()
+            FancyStuff().clear_console()
             self.main_menu()
         else:
             print('Please enter a valid input')
@@ -146,6 +146,7 @@ class MainMenu:
 """ ---------- MAIN PROGRAM ----------"""
 def main():
     while True:
+        FancyStuff().clear_console()
         main_menu = MainMenu()
         main_menu.main_menu()
     else:
