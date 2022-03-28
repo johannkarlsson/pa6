@@ -30,6 +30,7 @@ WELCOME TO WORDLE - PYTHON EDITION
             sys.stdout.write("\r" + animation[i % len(animation)])
             sys.stdout.flush()
         print("\n")
+        self.clear_console()
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''

@@ -58,6 +58,7 @@ class MainMenu:
             FancyStuff().clear_console()
             print('Profile created!')
             FancyStuff().load_wordle(profile)
+            Wordle().play_wordle(profile)
 
     """ ----------- ADD WORDS ------------- """
     def add_option(self):
@@ -92,7 +93,7 @@ class MainMenu:
         else:
             return False
 
-""" ----------- EDIT OPTION ------------- """
+    """ ----------- EDIT OPTION ------------- """
     def edit_option(self):
         '''Edit game calls on two other functions'''
         global glob_guesses
@@ -103,20 +104,20 @@ class MainMenu:
     def edit_guesses(self):
         '''Edit how many guesses'''
         max_guesses = input('How many guesses would you like to have? (1-6): ')
-        if max_guesses_check(max_guesses):
+        if self.max_guesses_check(max_guesses):
             return int(max_guesses)
         else:
             print('Please enter a valid input')
-            edit_guesses()
+            self.edit_guesses()
 
     def edit_letters(self):
         '''Edit length of word'''
         word_letters = input('How many letters would you like to guess? (1-6): ')
-        if word_letters_check(word_letters):
+        if self.word_letters_check(word_letters):
             return int(word_letters)
         else:
             print('Please enter a valid input')
-            edit_letters()
+            self.edit_letters()
 
     def max_guesses_check(self, max_guesses):
         '''HELPER'''
@@ -145,6 +146,9 @@ class MainMenu:
 def main():
     main_menu = MainMenu()
     main_menu.main_menu()
+=======
+    MainMenu().main_menu()
+>>>>>>> Stashed changes
 
 """ MAIN LOOP """
 while True:
