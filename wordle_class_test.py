@@ -213,14 +213,14 @@ class Wordle:
                 self.win_count += 1
                 print(colored("YOU WON! GOOD JOB!", 'green'))
                 print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
-                self.write_score_to_file()
+                self.write_score_to_file() # Senda inn W maybe?
     
     def resolve_loss(self):
                 print(colored("YOU LOSE! SORRY", 'red'))
                 self.loss_count += 1
                 print(f"The correct word was '{self.correct_word}'")
                 print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
-                self.write_score_to_file()
+                self.write_score_to_file() # Senda inn L maybe?
 
     def write_score_to_file(self):
         '''Creates text files to store player scores'''
