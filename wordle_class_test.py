@@ -10,6 +10,7 @@ import sys
 import os
 import time
 import random
+import math
 spell = SpellChecker()
 #TODO
 # Búa til menu, play eða edit CHECK
@@ -43,7 +44,8 @@ class Wordle:
         """ Generate a 5 letter wordle from text file """
         word_list = self.word_list
         word = (random.choice(word_list)).upper()
-        return word
+        # return word
+        return 'PILOT'
 
     def get_input(self):
         """ Get user input """
@@ -168,11 +170,11 @@ class Wordle:
 
     def play_again(self, profile):
         """ Ask user if he wants to play again """
-        play_again = input("Would you like to play again? (y/n): ").lower()
-        if play_again == "y":
+        play_again_input = input("Would you like to play again? (y/n): ").lower()
+        if play_again_input == "y":
             #FancyStuff().clear_console()
             self.play_wordle(profile)
-        if play_again == "n":
+        if play_again_input == "n":
             return
 
     def play_wordle(self, profile):
@@ -181,7 +183,7 @@ class Wordle:
         print('Logged in as: ' + profile)
         self.correct_word = self.generate_word()
         self.guess_counter = self.glob_guesses
-        # correct_word = "shyly"
+        # self.correct_word = "shyly"
         #guess_counter = self.glob_guesses # Max number of guesses
         while self.guess_counter != 0:
             self.print_guess_count()
@@ -227,6 +229,6 @@ class Wordle:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
-        score = ((self.guess_counter + 1) / (self.glob_guesses)) * 100 * len(self.correct_word)
+        score = math.floor(((self.guess_counter + 1) / (self.glob_guesses)) * 100 * len(self.correct_word))
         f = open(file_name_path, 'a')   # Opens file in append mode
         f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
