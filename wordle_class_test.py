@@ -40,13 +40,13 @@ class Wordle:
     def generate_word(self):
         """ Generate a 5 letter wordle from text file """
         word_list = self.get_word_list()
-        word = (random.choice(word_list))
-        return word.upper()
+        word = (random.choice(word_list)).upper()
+        return word
 
     def get_input(self):
         """ Get user input """
-        guess_word = input(f"Enter your guess ({self.glob_letters} letters): ") # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
-        return guess_word.upper()
+        guess_word = input(f"Enter your guess ({self.glob_letters} letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
+        return guess_word
 
     """ ----------- CHECKS ------------- """
     def input_check(self):
