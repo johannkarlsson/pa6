@@ -12,7 +12,7 @@ from fancy_stuff import FancyStuff
 
 class MainMenu:
     def __init__(self):
-        pass
+        self.word
 
     def print_header(self):
         print(FancyStuff().header)
@@ -103,38 +103,38 @@ class MainMenu:
 
     def edit_guesses(self):
         '''Edit how many guesses'''
-        max_guesses = input('How many guesses would you like to have? (1-6): ')
-        if self.max_guesses_check(max_guesses):
-            return int(max_guesses)
+        self.max_guesses = input('How many guesses would you like to have? (1-6): ')
+        if self.max_guesses_check(self.max_guesses):
+            return int(self.max_guesses)
         else:
             print('Please enter a valid input')
             self.edit_guesses()
 
     def edit_letters(self):
         '''Edit length of word'''
-        word_letters = input('How many letters would you like to guess? (1-6): ')
-        if self.word_letters_check(word_letters):
-            return int(word_letters)
+        self.word_letters = input('How many letters would you like to guess? (1-6): ')
+        if self.word_letters_check(self.word_letters):
+            return int(self.word_letters)
         else:
             print('Please enter a valid input')
             self.edit_letters()
 
-    def max_guesses_check(self, max_guesses):
+    def max_guesses_check(self):
         '''HELPER'''
         '''Checks if max_guesses is a digit between 1 and 6'''
-        if max_guesses.isdigit():
-            if int(max_guesses) > 0 and int(max_guesses) < 7:
+        if self.max_guesses.isdigit():
+            if int(self.max_guesses) > 0 and int(self.max_guesses) < 7:
                 return True
             else:
                 return False
         else:
             return False
 
-    def word_letters_check(self, word_letters):
+    def word_letters_check(self):
         '''HELPER'''
         '''Checks if word_letters is a digit between 1 and 6'''
-        if word_letters.isdigit():
-            if int(word_letters) > 0 and int(word_letters) < 7:
+        if self.word_letters.isdigit():
+            if int(self.word_letters) > 0 and int(self.word_letters) < 7:
                 return True
             else:
                 return False
@@ -144,12 +144,8 @@ class MainMenu:
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():
-<<<<<<< Updated upstream
     main_menu = MainMenu()
     main_menu.main_menu()
-=======
-    MainMenu().main_menu()
->>>>>>> Stashed changes
 
 """ MAIN LOOP """
 while True:
