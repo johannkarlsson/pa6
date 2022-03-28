@@ -11,6 +11,8 @@ import os
 import time
 import random
 spell = SpellChecker()
+from fancy_stuff import FancyStuff
+fancy_stuff = FancyStuff()
 #TODO
 # Búa til menu, play eða edit CHECK
 # Leyfa logins, profiles CHECK
@@ -169,7 +171,7 @@ class Wordle:
         """ Ask user if he wants to play again """
         play_again = input("Would you like to play again? (y/n): ")
         if play_again == "y":
-            FancyStuff().clear_console()
+            #FancyStuff().clear_console()
             self.play_wordle(profile)
         if play_again == "n":
             return

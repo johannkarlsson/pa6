@@ -5,7 +5,9 @@ import time
 from os.path import exists
 from wordle_class_test import Wordle
 from fancy_stuff import FancyStuff
+fancy_stuff = FancyStuff()
 from checks import Check
+check = Check()
 
 # GLOBALS
 
@@ -16,10 +18,10 @@ class MainMenu:
         self.word_letters = 5
 
     def print_header(self):
-        print(FancyStuff().header)
+        print(fancy_stuff.header)
 
     def print_main_menu(self):
-        print(FancyStuff().menu_header)
+        print(fancy_stuff.menu_header)
 
     def main_menu(self):
         self.print_main_menu()
@@ -52,14 +54,14 @@ class MainMenu:
         file_name_path = directory+filename
         if exists(file_name_path):
             f = open(file_name_path, 'a')   # Opens file in append mode
-            FancyStuff().clear_console()
-            FancyStuff().load_wordle(profile)
+            fancy_stuff.clear_console()
+            fancy_stuff.load_wordle(profile)
             return self.launch_wordle(profile)
         else:
             f = open(file_name_path, 'a')
-            FancyStuff().clear_console()
+            fancy_stuff.clear_console()
             print('Profile created!')
-            FancyStuff().load_wordle(profile)
+            fancy_stuff.load_wordle(profile)
             return self.launch_wordle(profile)
 
     def launch_wordle(self, profile):
@@ -71,7 +73,7 @@ class MainMenu:
         print('What word would you like to append to the word bank?')
         word_bank_input = input('Input word: ')
         file = open('test_words.txt', 'a')
-        if Check.duplicate_word_check(word_bank_input):
+        if check.duplicate_word_check(word_bank_input):
             file.write(word_bank_input + '\n')
             print(f'"{word_bank_input}" added to word bank')
             file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
@@ -85,7 +87,7 @@ class MainMenu:
         if prompt == 'y':
             self.add_option()
         elif prompt == 'n':
-            FancyStuff().clear_console()
+            fancy_stuff.clear_console()
             self.main_menu()
         else:
             print('Please enter a valid input')
@@ -100,7 +102,7 @@ class MainMenu:
     def edit_guesses(self):
         '''Edit how many guesses'''
         max_guesses_input = input('How many guesses would you like to have? (1-10): ')
-        if Check.max_guesses_check(max_guesses_input):
+        if check.max_guesses_check(max_guesses_input):
             return int(max_guesses_input)
         else:
             print('Please enter a valid input')
@@ -109,7 +111,7 @@ class MainMenu:
     def edit_letters(self):
         '''Edit length of word'''
         word_letters_input = input('How many letters would you like to guess? (4-6): ')
-        if Check.word_letters_check(word_letters_input):
+        if check.word_letters_check(word_letters_input):
             return int(word_letters_input)
         else:
             print('Please enter a valid input')
@@ -119,7 +121,7 @@ class MainMenu:
 """ ---------- MAIN PROGRAM ----------"""
 def main():
     while True:
-        FancyStuff().clear_console()
+        fancy_stuff.clear_console()
         main_menu = MainMenu()
         main_menu.main_menu()
     else:
