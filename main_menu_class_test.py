@@ -44,7 +44,7 @@ class MainMenu:
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
-        wordle = Wordle(self.max_guesses, self.word_letters)
+        #wordle = Wordle(self.max_guesses, self.word_letters)
         filename = profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
         if not os.path.exists(directory):
