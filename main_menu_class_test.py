@@ -12,12 +12,8 @@ from fancy_stuff import FancyStuff
 
 class MainMenu:
     def __init__(self):
-<<<<<<< Updated upstream
-        self.word
-=======
         self.max_guesses = 6
         self.word_letters = 5
->>>>>>> Stashed changes
 
     def print_header(self):
         print(FancyStuff().header)
