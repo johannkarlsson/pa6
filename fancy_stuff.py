@@ -13,13 +13,15 @@ WELCOME TO WORDLE - PYTHON EDITION
     Author - Jóhann Karlsson
 """
         self.menu_header = """
-----------------------------------------------------------
+------------------------------------------------------------
 
                         MAIN MENU
 
-1. Play      2. Add Words      3. Edit Game       4. Quit
+1. Play      2. Add Words       3. Edit Game     4. History
 
-----------------------------------------------------------
+                        5. Quit
+
+------------------------------------------------------------
 """
     def load_wordle(self, profile):
         '''ANIMATION FUNCTION'''
