@@ -29,6 +29,7 @@ class Wordle:
         self.correct_word = None
         self.guess_word = None
         self.win_count = 0
+        self.word_list = self.get_word_list()
 
 
     """ ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
@@ -40,7 +41,7 @@ class Wordle:
 
     def generate_word(self):
         """ Generate a 5 letter wordle from text file """
-        word_list = self.get_word_list()
+        word_list = self.word_list
         word = (random.choice(word_list)).upper()
         return word
 
