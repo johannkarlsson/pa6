@@ -52,6 +52,7 @@ class MainMenu:
             f = open(file_name_path, 'a')   # Opens file in write mode
             FancyStuff().clear_console()
             FancyStuff().load_wordle(profile) 
+            Wordle().play_wordle(profile)
         else:
             f = open(file_name_path, 'a')
             FancyStuff().clear_console()
@@ -92,52 +93,52 @@ class MainMenu:
             return False
 
 """ ----------- EDIT OPTION ------------- """
-def edit_option():
-    '''Edit game calls on two other functions'''
-    global glob_guesses
-    global glob_letters
-    glob_guesses = edit_guesses()
-    # glob_letters = edit_letters() # We don't wanna do this.
+    def edit_option(self):
+        '''Edit game calls on two other functions'''
+        global glob_guesses
+        global glob_letters
+        glob_guesses = self.edit_guesses()
+        # glob_letters = edit_letters() # We don't wanna do this.
 
-def edit_guesses():
-    '''Edit how many guesses'''
-    max_guesses = input('How many guesses would you like to have? (1-6): ')
-    if max_guesses_check(max_guesses):
-        return int(max_guesses)
-    else:
-        print('Please enter a valid input')
-        edit_guesses()
+    def edit_guesses(self):
+        '''Edit how many guesses'''
+        max_guesses = input('How many guesses would you like to have? (1-6): ')
+        if max_guesses_check(max_guesses):
+            return int(max_guesses)
+        else:
+            print('Please enter a valid input')
+            edit_guesses()
 
-def edit_letters():
-    '''Edit length of word'''
-    word_letters = input('How many letters would you like to guess? (1-6): ')
-    if word_letters_check(word_letters):
-        return int(word_letters)
-    else:
-        print('Please enter a valid input')
-        edit_letters()
+    def edit_letters(self):
+        '''Edit length of word'''
+        word_letters = input('How many letters would you like to guess? (1-6): ')
+        if word_letters_check(word_letters):
+            return int(word_letters)
+        else:
+            print('Please enter a valid input')
+            edit_letters()
 
-def max_guesses_check(max_guesses):
-    '''HELPER'''
-    '''Checks if max_guesses is a digit between 1 and 6'''
-    if max_guesses.isdigit():
-        if int(max_guesses) > 0 and int(max_guesses) < 7:
-            return True
+    def max_guesses_check(self, max_guesses):
+        '''HELPER'''
+        '''Checks if max_guesses is a digit between 1 and 6'''
+        if max_guesses.isdigit():
+            if int(max_guesses) > 0 and int(max_guesses) < 7:
+                return True
+            else:
+                return False
         else:
             return False
-    else:
-        return False
 
-def word_letters_check(word_letters):
-    '''HELPER'''
-    '''Checks if word_letters is a digit between 1 and 6'''
-    if word_letters.isdigit():
-        if int(word_letters) > 0 and int(word_letters) < 7:
-            return True
+    def word_letters_check(self, word_letters):
+        '''HELPER'''
+        '''Checks if word_letters is a digit between 1 and 6'''
+        if word_letters.isdigit():
+            if int(word_letters) > 0 and int(word_letters) < 7:
+                return True
+            else:
+                return False
         else:
             return False
-    else:
-        return False
 
 
 """ ---------- MAIN PROGRAM ----------"""
