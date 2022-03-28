@@ -44,7 +44,6 @@ class MainMenu:
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
-        wordle = Wordle(self.max_guesses, self.word_letters)
         filename = profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
         if not os.path.exists(directory):
@@ -107,7 +106,7 @@ class MainMenu:
 
     def edit_guesses(self):
         '''Edit how many guesses'''
-        max_guesses_input = (input('How many guesses would you like to have? (1-10): '))
+        max_guesses_input = input('How many guesses would you like to have? (1-10): ')
         if self.max_guesses_check(max_guesses_input):
             self.max_guesses = max_guesses_input
         else:
