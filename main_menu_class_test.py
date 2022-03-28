@@ -24,7 +24,7 @@ class MainMenu:
         self.print_main_menu()
         menu_input = input("Please select an option: ")
         if menu_input == "1":
-            self.play_option()
+            return self.play_option()
         elif menu_input == "2":
             self.add_option()
         elif menu_input == "3":
@@ -39,7 +39,7 @@ class MainMenu:
     """ ----------- LOGIN OPTION ------------- """
     def play_option(self): # Spyr notanda um nafn hans til að búa til skrá
         profile = input("Please enter your profile name: ").upper()
-        self.create_player_file(profile)
+        return self.create_player_file(profile)
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
@@ -52,7 +52,7 @@ class MainMenu:
             f = open(file_name_path, 'a')   # Opens file in write mode
             FancyStuff().clear_console()
             FancyStuff().load_wordle(profile) 
-            Wordle().play_wordle(profile)
+            return Wordle().play_wordle(profile)
         else:
             f = open(file_name_path, 'a')
             FancyStuff().clear_console()
