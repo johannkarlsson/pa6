@@ -225,5 +225,7 @@ class Wordle:
         file_name_path = directory+filename
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
+        score = ((self.guess_counter + 1) / (self.glob_guesses)) * 100 * len(self.correct_word)
         f = open(file_name_path, 'a')   # Opens file in append mode
-        f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\n")
+        f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n\n")
