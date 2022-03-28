@@ -24,11 +24,11 @@ class MainMenu:
         self.print_main_menu()
         menu_input = input("Please select an option: ")
         if menu_input == "1":
-            play_option()
+            self.play_option()
         elif menu_input == "2":
-            add_option()
+            self.add_option()
         elif menu_input == "3":
-            edit_option()
+            self.edit_option()
             self.main_menu()
         elif menu_input == "4":
             quit()
@@ -36,65 +36,60 @@ class MainMenu:
             print("Please enter a valid input!")
             self.main_menu()
 
-""" ----------- LOGIN OPTION ------------- """
-def play_option():
-    print('User chose 1 -- PLACEHOLDER DÓT')
-    print('Þarf ekkert þetta fall held ég, þetta er bara milliliður')
-    login_profile()
+    """ ----------- LOGIN OPTION ------------- """
+    def play_option(self): # Spyr notanda um nafn hans til að búa til skrá
+        profile = input("Please enter your profile name: ").upper()
+        self.create_player_file(profile)
 
-def login_profile(): # Spyr notanda um nafn hans til að búa til skrá
-    profile = input("Please enter your profile name: ")
-    create_player_file(profile.upper())
+    def create_player_file(self, profile):
+        '''Creates text files to store player scores'''
+        filename = profile + '.txt'         # Create full file name
+        directory = "player_profiles/"      # Create full file path
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file_name_path = directory+filename
+        if exists(file_name_path):
+            f = open(file_name_path, 'a')   # Opens file in write mode
+            FancyStuff().clear_console()
+            FancyStuff().load_wordle(profile) 
+        else:
+            f = open(file_name_path, 'a')
+            FancyStuff().clear_console()
+            print('Profile created!')
+            FancyStuff().load_wordle(profile)
 
-def create_player_file(profile):
-    '''Creates text files to store player scores'''
-    filename = profile + '.txt'         # Create full file name
-    directory = "player_profiles/"      # Create full file path
-    if not os.path.exists(directory):
-       os.makedirs(directory)
-    file_name_path = directory+filename
-    if exists(file_name_path):
-        f = open(file_name_path, 'a')   # Opens file in write mode
-        clear_console()
-        load_wordle(profile) 
-    else:
-        f = open(file_name_path, 'a')
-        clear_console()
-        print('Profile created!')
-        load_wordle(profile)
+    """ ----------- ADD WORDS ------------- """
+    def add_option(self):
+        print('What word would you like to append to the word bank?')
+        word_bank_input = input('Input word: ')
+        file = open('test_words.txt', 'a')
+        if self.duplicate_word_check(word_bank_input):
+            file.write(word_bank_input + '\n')
+            print(f'"{word_bank_input}" added to word bank')
+            file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
+            self.add_more_words()
+        else:
+            print('Word already in word bank')
+            self.add_more_words()
 
-""" ----------- ADD WORDS ------------- """
-def add_option():
-    print('What word would you like to append to the word bank?')
-    word_bank_input = input('Input word: ')
-    file = open('test_words.txt', 'a')
-    if duplicate_word_check(word_bank_input):
-        file.write(word_bank_input + '\n')
-        print(f'"{word_bank_input}" added to word bank')
-        file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
-        add_more_words()
-    else:
-        print('Word already in word bank')
-        add_more_words()
+    def add_more_words(self):
+        prompt = input('Would you like to add another word? (y/n): ').lower()
+        if prompt == 'y':
+            self.add_option()
+        elif prompt == 'n':
+            self.clear_console()
+            self.main_menu()
+        else:
+            print('Please enter a valid input')
+            self.add_more_words()
 
-def add_more_words():
-    prompt = input('Would you like to add another word? (y/n): ').lower()
-    if prompt == 'y':
-        add_option()
-    elif prompt == 'n':
-        clear_console()
-        main_menu()
-    else:
-        print('Please enter a valid input')
-        add_more_words()
-
-def duplicate_word_check(word):
-    with open('test_words.txt', 'r') as file:
-        words = file.read()
-    if word not in words:
-        return True
-    else:
-        return False
+    def duplicate_word_check(self, word):
+        with open('test_words.txt', 'r') as file:
+            words = file.read()
+        if word not in words:
+            return True
+        else:
+            return False
 
 """ ----------- EDIT OPTION ------------- """
 def edit_option():
@@ -143,8 +138,6 @@ def word_letters_check(word_letters):
             return False
     else:
         return False
-
-
 
 
 """ ---------- MAIN PROGRAM ----------"""
