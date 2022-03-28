@@ -101,7 +101,7 @@ class MainMenu:
     def edit_guesses(self):
         '''Edit how many guesses'''
         max_guesses_input = input('How many guesses would you like to have? (1-10): ')
-        if self.max_guesses_check(max_guesses_input):
+        if Check.max_guesses_check(max_guesses_input):
             return int(max_guesses_input)
         else:
             print('Please enter a valid input')
@@ -110,22 +110,11 @@ class MainMenu:
     def edit_letters(self):
         '''Edit length of word'''
         word_letters_input = input('How many letters would you like to guess? (4-6): ')
-        if self.word_letters_check(word_letters_input):
+        if Check.word_letters_check(word_letters_input):
             return int(word_letters_input)
         else:
             print('Please enter a valid input')
             self.edit_letters()
-
-    def max_guesses_check(self, max_guesses):
-        '''HELPER'''
-        '''Checks if max_guesses is a digit between 1 and 10'''
-        if max_guesses.isdigit():
-            if int(max_guesses) > 0 and int(max_guesses) < 11:
-                return True
-            else:
-                return False
-        else:
-            return False
 
     def word_letters_check(self, word_letters):
         '''HELPER'''
