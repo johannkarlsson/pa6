@@ -105,13 +105,8 @@ class MainMenu:
     def edit_guesses(self):
         '''Edit how many guesses'''
         self.max_guesses = input('How many guesses would you like to have? (1-6): ')
-<<<<<<< Updated upstream
         if self.max_guesses_check(self.max_guesses):
             return int(self.max_guesses)
-=======
-        if self.max_guesses_check():
-            return int(max_guesses)
->>>>>>> Stashed changes
         else:
             print('Please enter a valid input')
             self.edit_guesses()
