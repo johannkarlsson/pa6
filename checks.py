@@ -1,5 +1,5 @@
 class Check:
-    def duplicate_word_check(word):
+    def duplicate_word_check(self, word):
         '''Checks if word already exists in wordbank'''
         with open('test_words.txt', 'r') as file:
             words = file.read()
@@ -8,7 +8,7 @@ class Check:
         else:
             return False
 
-    def max_guesses_check(max_guesses):
+    def max_guesses_check(self, max_guesses):
         '''Checks if max_guesses is a digit between 1 and 10'''
         if max_guesses.isdigit():
             if int(max_guesses) > 0 and int(max_guesses) < 11:
@@ -18,7 +18,7 @@ class Check:
         else:
             return False
     
-    def word_letters_check(word_letters):
+    def word_letters_check(self, word_letters):
         '''Checks if word_letters is a digit between 4 and 6'''
         if word_letters.isdigit():
             if int(word_letters) > 3 and int(word_letters) < 7:

@@ -19,7 +19,7 @@ WELCOME TO WORDLE - PYTHON EDITION
 
 1. Play      2. Add Words       3. Edit Game     4. History
 
-                        5. Quit
+                        Q. Quit
 
 ------------------------------------------------------------
 """

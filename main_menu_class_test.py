@@ -35,7 +35,7 @@ class MainMenu:
             self.main_menu()
         elif menu_input == "4":
             self.print_player_history()
-        elif menu_input == "5":
+        elif menu_input.lower() == "q":
             quit()
         else:
             print("Please enter a valid input!")
