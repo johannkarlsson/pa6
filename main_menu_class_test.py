@@ -82,8 +82,8 @@ class MainMenu:
             return self.launch_wordle(profile)
 
     def launch_wordle(self, profile):
-        wordle = Wordle(self.max_guesses, self.word_letters)
-        return wordle.play_wordle(profile)
+        wordle = Wordle(profile, self.max_guesses, self.word_letters)
+        return wordle.play_wordle()
 
     """ ----------- ADD WORDS ------------- """
     def add_option(self):

@@ -20,7 +20,8 @@ spell = SpellChecker()
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
 # Giska rett í síðasta en fæ you lose
 class Wordle:
-    def __init__(self, max_guesses = 6, letter_count = 5):
+    def __init__(self, profile, max_guesses = 6, letter_count = 5):
+        self.profile = profile
         self.glob_guesses = max_guesses
         self.glob_letters = letter_count
         self.guess_counter = self.glob_guesses
@@ -30,6 +31,7 @@ class Wordle:
         self.correct_word = None
         self.guess_word = None
         self.win_count = 0
+        self.loss_count = 0
         self.word_list = self.get_word_list()
 
 
@@ -168,23 +170,20 @@ class Wordle:
             return True
         return False
 
-    def play_again(self, profile):
+    def play_again(self):
         """ Ask user if he wants to play again """
         play_again_input = input("Would you like to play again? (y/n): ").lower()
         if play_again_input == "y":
             #FancyStuff().clear_console()
-            self.play_wordle(profile)
+            self.play_wordle(self.profile)
         if play_again_input == "n":
             return
 
-    def play_wordle(self, profile):
-        #global glob_guesses
-        #print_header()
-        print('Logged in as: ' + profile)
-        self.correct_word = self.generate_word()
+    def play_wordle(self):
+        print('Logged in as: ' + self.profile)
+        #self.correct_word = self.generate_word()
+        self.correct_word = "FLAME"
         self.guess_counter = self.glob_guesses
-        # self.correct_word = "shyly"
-        #guess_counter = self.glob_guesses # Max number of guesses
         while self.guess_counter != 0:
             self.print_guess_count()
             self.guess_word = self.get_input()
@@ -193,37 +192,36 @@ class Wordle:
                 self.guess_counter -= 1
                 self.print_letters()
                 if self.win_check():
-                    self.win_check()
-                    print(colored("YOU WON! GOOD JOB!", 'green'))
-                    self.write_score_to_file(profile)
-                    self.play_again(profile)
-                    # if play_again():
-                    #     return True
-                    # else:
-                    #     return False
+                    self.resolve_win(self.profile)
+                    return
             else:
                 pass
         else:
             if self.win_check():
-                print(colored("YOU WON! GOOD JOB!", 'green'))
-                self.write_score_to_file(profile)
-                self.play_again(profile)
-                # if play_again():
-                #     return True
-                # else:
-                #     return False
+                self.resolve_win(self.profile)
+                self.play_again(self.profile)
+                return
             else:
-                print(colored("YOU LOSE! SORRY", 'red'))
-                print(f"The correct word was '{self.correct_word}'")
-                self.play_again(profile)
-                # if play_again():
-                #     return True
-                # else:
-                #     return False
+                self.resolve_loss(self.profile)
+                self.play_again(self.profile)
+                return
 
-    def write_score_to_file(self, profile):
+    def resolve_win(self):
+                self.win_count += 1
+                print(colored("YOU WON! GOOD JOB!", 'green'))
+                print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
+                self.write_score_to_file(self.rofile)
+    
+    def resolve_loss(self):
+                print(colored("YOU LOSE! SORRY", 'red'))
+                self.loss_count += 1
+                print(f"The correct word was '{self.correct_word}'")
+                print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
+                self.write_score_to_file(self.profile)
+
+    def write_score_to_file(self):
         '''Creates text files to store player scores'''
-        filename = profile + '.txt'         # Create full file name
+        filename = self.profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
         file_name_path = directory+filename
         now = datetime.now()
