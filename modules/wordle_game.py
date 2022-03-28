@@ -1,14 +1,14 @@
 # from colorama import init
 
 #from glob import glob
-from threading      import get_ident
+# from threading      import get_ident
 from spellchecker   import SpellChecker
-from os.path        import exists
+# from os.path        import exists
 from termcolor      import colored
 from datetime       import datetime
-import sys
+# import sys
 import os
-import time
+# import time
 import random
 import math
 spell = SpellChecker()

@@ -1,7 +1,7 @@
-from email import header
-import sys
+# from email import header
+# import sys
 import os
-import time
+# import time
 from os.path import exists
 from modules.wordle_game import Wordle
 from modules.fancy_stuff import FancyStuff
