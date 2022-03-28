@@ -19,10 +19,9 @@ spell = SpellChecker()
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
 # Giska rett í síðasta en fæ you lose
 class Wordle:
-
-    def __init__(self):
-        self.glob_guesses = 6
-        self.glob_letters = 5
+    def __init__(self, max_guesses = 6, letter_count = 5):
+        self.glob_guesses = max_guesses
+        self.glob_letters = letter_count
         self.guess_counter = self.glob_guesses
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
