@@ -144,6 +144,7 @@ class MainMenu:
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():
+<<<<<<< Updated upstream
     main_menu = MainMenu()
     main_menu.main_menu()
 =======
