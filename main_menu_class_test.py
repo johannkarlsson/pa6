@@ -5,6 +5,7 @@ import time
 from os.path import exists
 from wordle_class_test import Wordle
 from fancy_stuff import FancyStuff
+from checks import Check
 
 # GLOBALS
 
@@ -70,7 +71,7 @@ class MainMenu:
         print('What word would you like to append to the word bank?')
         word_bank_input = input('Input word: ')
         file = open('test_words.txt', 'a')
-        if self.duplicate_word_check(word_bank_input):
+        if Check.duplicate_word_check(word_bank_input):
             file.write(word_bank_input + '\n')
             print(f'"{word_bank_input}" added to word bank')
             file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
@@ -90,14 +91,6 @@ class MainMenu:
             print('Please enter a valid input')
             self.add_more_words()
 
-    def duplicate_word_check(self, word):
-        with open('test_words.txt', 'r') as file:
-            words = file.read()
-        if word not in words:
-            return True
-        else:
-            return False
-
     """ ----------- EDIT OPTION ------------- """
     def edit_option(self):
         '''Edit game calls on two other functions'''
@@ -107,7 +100,7 @@ class MainMenu:
     def edit_guesses(self):
         '''Edit how many guesses'''
         max_guesses_input = input('How many guesses would you like to have? (1-10): ')
-        if self.max_guesses_check(max_guesses_input):
+        if Check.max_guesses_check(max_guesses_input):
             return int(max_guesses_input)
         else:
             print('Please enter a valid input')
@@ -116,33 +109,11 @@ class MainMenu:
     def edit_letters(self):
         '''Edit length of word'''
         word_letters_input = input('How many letters would you like to guess? (4-6): ')
-        if self.word_letters_check(word_letters_input):
+        if Check.word_letters_check(word_letters_input):
             return int(word_letters_input)
         else:
             print('Please enter a valid input')
             self.edit_letters()
-
-    def max_guesses_check(self, max_guesses):
-        '''HELPER'''
-        '''Checks if max_guesses is a digit between 1 and 10'''
-        if max_guesses.isdigit():
-            if int(max_guesses) > 0 and int(max_guesses) < 11:
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    def word_letters_check(self, word_letters):
-        '''HELPER'''
-        '''Checks if word_letters is a digit between 4 and 6'''
-        if word_letters.isdigit():
-            if int(word_letters) > 3 and int(word_letters) < 7:
-                return True
-            else:
-                return False
-        else:
-            return False
 
 
 """ ---------- MAIN PROGRAM ----------"""
