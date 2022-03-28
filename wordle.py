@@ -261,7 +261,7 @@ def guess(guess_word, correct_word):
 
 def print_result(guess_word, correct_word):
     """ Main logic for checking letters and printing the Wordle """
-    already_printed = []
+    already_printed = [] # Safeguard to avoid printing a yellow letter 
     correct_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
     print("_" * 21)
     print("|", end="")
@@ -288,6 +288,7 @@ def print_result(guess_word, correct_word):
             print(colored(f" {letter} ", 'white',), end='|')
     print()
     print("‾" * 21)
+
 
 def duplicate_letter_check(correct_word):
     """ Return a list of the duplicate letters of correct word"""
