@@ -1,7 +1,4 @@
 class Check:
-    def __init__(self):
-        pass
-
     def duplicate_word_check(word):
         '''Checks if word already exists in wordbank'''
         with open('test_words.txt', 'r') as file:

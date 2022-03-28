@@ -116,17 +116,6 @@ class MainMenu:
             print('Please enter a valid input')
             self.edit_letters()
 
-    def word_letters_check(self, word_letters):
-        '''HELPER'''
-        '''Checks if word_letters is a digit between 4 and 6'''
-        if word_letters.isdigit():
-            if int(word_letters) > 3 and int(word_letters) < 7:
-                return True
-            else:
-                return False
-        else:
-            return False
-
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():
