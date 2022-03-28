@@ -117,7 +117,6 @@ class MainMenu:
             print('Please enter a valid input')
             self.edit_letters()
 
-
 """ ---------- MAIN PROGRAM ----------"""
 def main():
     while True:

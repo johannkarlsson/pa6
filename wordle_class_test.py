@@ -169,7 +169,7 @@ class Wordle:
 
     def play_again(self, profile):
         """ Ask user if he wants to play again """
-        play_again = input("Would you like to play again? (y/n): ")
+        play_again = input("Would you like to play again? (y/n): ").lower()
         if play_again == "y":
             #FancyStuff().clear_console()
             self.play_wordle(profile)
@@ -227,5 +227,7 @@ class Wordle:
         file_name_path = directory+filename
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
+        score = ((self.guess_counter + 1) / (self.glob_guesses)) * 100 * len(self.correct_word)
         f = open(file_name_path, 'a')   # Opens file in append mode
-        f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\n")
+        f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n\n")
