@@ -45,7 +45,7 @@ class Wordle:
 
     def get_input(self):
         """ Get user input """
-        guess_word = input("Enter your guess (5 letters): ") # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
+        guess_word = input(f"Enter your guess ({self.glob_letters} letters): ") # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
         return guess_word.upper()
 
     """ ----------- CHECKS ------------- """
