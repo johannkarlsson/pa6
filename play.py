@@ -90,9 +90,11 @@ class MainMenu:
             if word_bank_input == '':
                 return
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
+            directory = 'wordlists/'
+            file_name_path = directory+word_bank
             try:
                 if check.add_word_length_check(len(word_bank_input)):
-                    file = open(word_bank, 'a')
+                    file = open(file_name_path, 'a')
                 if check.duplicate_word_check(word_bank, word_bank_input):
                     file.write(word_bank_input + '\n')
                     print(f'"{word_bank_input}" added to word bank')

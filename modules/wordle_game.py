@@ -38,7 +38,9 @@ class Wordle:
     """ ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
-        with open(word_bank, "r") as file:
+        directory = "wordlists/"
+        file_name_path = directory+word_bank
+        with open(file_name_path, "r") as file:
             allText = file.read()
             words = list(map(str, allText.split()))
             return words
