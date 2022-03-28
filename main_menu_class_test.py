@@ -145,8 +145,12 @@ class MainMenu:
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():
-    main_menu = MainMenu()
-    main_menu.main_menu()
+    while True:
+        main_menu = MainMenu()
+        main_menu.main_menu()
+    else:
+        quit()
+        
 
 """ MAIN LOOP """
 while True:
