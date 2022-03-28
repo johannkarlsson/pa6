@@ -22,9 +22,9 @@ spell = SpellChecker()
 class Wordle:
     def __init__(self, profile, max_guesses = 6, letter_count = 5):
         self.profile = profile
-        self.glob_guesses = max_guesses
-        self.glob_letters = letter_count
-        self.guess_counter = self.glob_guesses
+        self.max_guesses = max_guesses
+        self.letter_count = letter_count
+        self.guess_counter = self.max_guesses
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
         self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -46,12 +46,11 @@ class Wordle:
         """ Generate a 5 letter wordle from text file """
         word_list = self.word_list
         word = (random.choice(word_list)).upper()
-        # return word
-        return 'PILOT'
+        return word
 
     def get_input(self):
         """ Get user input """
-        guess_word = input(f"Enter your guess ({self.glob_letters} letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
+        guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
         return guess_word
 
     """ ----------- CHECKS ------------- """
@@ -70,8 +69,8 @@ class Wordle:
             return False
 
     def length_check(self):
-        """ Check if word is length of glob_letters """
-        if len(self.guess_word) == self.glob_letters:
+        """ Check if word is length of letter_count """
+        if len(self.guess_word) == self.letter_count:
             return True
         return False
 
@@ -85,15 +84,15 @@ class Wordle:
 
     def print_guess_count(self):
         """ Print the current guess number in the appropriate color """
-        #global glob_guesses
-        if (0.66 * self.glob_guesses) <= self.guess_counter <= self.glob_guesses:
-            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.glob_guesses}",'green'))
+        #global max_guesses
+        if (0.66 * self.max_guesses) <= self.guess_counter <= self.max_guesses:
+            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.max_guesses}",'green'))
 
-        elif (0.33 * self.glob_guesses) <= self.guess_counter <= (0.66 * self.glob_guesses):
-            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.glob_guesses}",'yellow'))
+        elif (0.33 * self.max_guesses) <= self.guess_counter <= (0.66 * self.max_guesses):
+            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.max_guesses}",'yellow'))
 
-        if (0.00 * self.glob_guesses) <= self.guess_counter <= (0.33 * self.glob_guesses):
-            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.glob_guesses}",'red'))
+        if (0.00 * self.max_guesses) <= self.guess_counter <= (0.33 * self.max_guesses):
+            print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.max_guesses}",'red'))
 
     def guess(self):
         if self.input_check():
@@ -174,16 +173,16 @@ class Wordle:
         """ Ask user if he wants to play again """
         play_again_input = input("Would you like to play again? (y/n): ").lower()
         if play_again_input == "y":
-            #FancyStuff().clear_console()
-            self.play_wordle(self.profile)
+            self.clear_console()
+            self.play_wordle()
         if play_again_input == "n":
             return
 
     def play_wordle(self):
         print('Logged in as: ' + self.profile)
-        #self.correct_word = self.generate_word()
-        self.correct_word = "FLAME"
-        self.guess_counter = self.glob_guesses
+        self.correct_word = self.generate_word()
+        # self.correct_word = "FLAME"
+        self.guess_counter = self.max_guesses
         while self.guess_counter != 0:
             self.print_guess_count()
             self.guess_word = self.get_input()
@@ -192,32 +191,33 @@ class Wordle:
                 self.guess_counter -= 1
                 self.print_letters()
                 if self.win_check():
-                    self.resolve_win(self.profile)
+                    self.resolve_win()
+                    self.play_again()
                     return
             else:
                 pass
         else:
             if self.win_check():
-                self.resolve_win(self.profile)
-                self.play_again(self.profile)
+                self.resolve_win()
+                self.play_again()
                 return
             else:
-                self.resolve_loss(self.profile)
-                self.play_again(self.profile)
+                self.resolve_loss()
+                self.play_again()
                 return
 
     def resolve_win(self):
                 self.win_count += 1
                 print(colored("YOU WON! GOOD JOB!", 'green'))
                 print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
-                self.write_score_to_file(self.rofile)
+                self.write_score_to_file()
     
     def resolve_loss(self):
                 print(colored("YOU LOSE! SORRY", 'red'))
                 self.loss_count += 1
                 print(f"The correct word was '{self.correct_word}'")
                 print(f"Current session record: W:{self.win_count} L: {self.loss_count}")
-                self.write_score_to_file(self.profile)
+                self.write_score_to_file()
 
     def write_score_to_file(self):
         '''Creates text files to store player scores'''
@@ -227,6 +227,13 @@ class Wordle:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
-        score = math.floor(((self.guess_counter + 1) / (self.glob_guesses)) * 100 * len(self.correct_word))
+        score = math.floor(((self.guess_counter + 1) / (self.max_guesses)) * 100 * len(self.correct_word))
         f = open(file_name_path, 'a')   # Opens file in append mode
         f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
+
+    def clear_console(self):
+        '''HELPER FUNCTION TO CLEAR SCREEN'''
+        command = 'clear'
+        if os.name in ('nt', 'dos'):
+            command = 'cls'
+        os.system(command)
