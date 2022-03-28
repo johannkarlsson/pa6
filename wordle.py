@@ -47,7 +47,7 @@ def print_main_menu():
 
                         MAIN MENU
 
-1. Play     2. Add Words     3. Edit Game         4. Quit
+1. Play      2. Add Words      3. Edit Game       4. Quit
 
 ----------------------------------------------------------
 """
