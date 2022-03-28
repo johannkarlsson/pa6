@@ -8,6 +8,16 @@ class Check:
         else:
             return False
 
+    def add_word_length_check(self, word_length):
+        '''Checks if word_length is a digit between 4 and 6'''
+        if word_length.isdigit():
+            if int(word_length) > 3 and int(word_length) < 7:
+                return True
+            else:
+                return False
+        else:
+            return False
+
     def max_guesses_check(self, max_guesses):
         '''Checks if max_guesses is a digit between 1 and 10'''
         if max_guesses.isdigit():
