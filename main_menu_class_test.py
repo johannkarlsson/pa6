@@ -89,7 +89,7 @@ class MainMenu:
     def add_option(self):
         print('What word would you like to append to the word bank?')
         word_bank_input = input('Input word: ')
-        if Check.add_word_length_check(len(word_bank_input)):
+        if check.add_word_length_check(len(word_bank_input)):
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
             file = open(word_bank, 'a')
         if check.duplicate_word_check(word_bank_input):
