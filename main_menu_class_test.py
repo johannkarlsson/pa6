@@ -1,10 +1,11 @@
+import sys
+import os
+import time
+from wordle_class_test import Wordle
+from os.path import exists
+wordle = Wordle()
+
 # GLOBALS
-glob_guesses = 6
-glob_letters = 5
-
-
-green_guessed_letters = []
-yellow_guessed_letters = []
 
 def print_header():
     header = """
@@ -55,7 +56,7 @@ def load_wordle(profile):
         sys.stdout.write("\r" + animation[i % len(animation)])
         sys.stdout.flush()
     print("\n")
-    play_wordle(profile)
+    wordle.play_wordle(profile)
 
 def clear_console():
     '''HELPER FUNCTION TO CLEAR SCREEN'''
