@@ -9,9 +9,6 @@ fancy_stuff = FancyStuff()
 from checks import Check
 check = Check()
 
-# GLOBALS
-
-
 class MainMenu:
     def __init__(self):
         self.max_guesses = 6
@@ -87,9 +84,11 @@ class MainMenu:
 
     """ ----------- ADD WORDS ------------- """
     def add_option(self):
-        print('What word would you like to append to the word bank?')
+        print('What word would you like to append to the word bank? (ENTER to exit)')
         while True:
             word_bank_input = input('Input word: ')
+            if word_bank_input == '':
+                return
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
             try:
                 if check.add_word_length_check(len(word_bank_input)):
