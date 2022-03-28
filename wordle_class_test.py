@@ -65,7 +65,7 @@ class Wordle:
                 print()
                 return False
         else:
-            print("Word must be exactly 5 letters!")
+            print(f"Word must be exactly {self.letter_count} letters!")
             print()
             return False
 
