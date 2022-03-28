@@ -2,7 +2,6 @@ from email import header
 import sys
 import os
 import time
-from wordle_class_test import Wordle
 from os.path import exists
 from wordle_class_test import Wordle
 from fancy_stuff import FancyStuff

@@ -1,5 +1,6 @@
 # from colorama import init
-from glob import glob
+
+#from glob import glob
 from threading      import get_ident
 from spellchecker   import SpellChecker
 from os.path        import exists
@@ -10,7 +11,6 @@ import os
 import time
 import random
 spell = SpellChecker()
-
 #TODO
 # Búa til menu, play eða edit CHECK
 # Leyfa logins, profiles CHECK
@@ -28,6 +28,7 @@ class Wordle:
         self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
         self.correct_word = None
         self.guess_word = None
+        self.win_count = 0
 
 
     """ ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
@@ -168,6 +169,7 @@ class Wordle:
         """ Ask user if he wants to play again """
         play_again = input("Would you like to play again? (y/n): ").lower()
         if play_again == "y":
+            FancyStuff().clear_console()
             self.play_wordle(profile)
         if play_again == "n":
             return
@@ -177,6 +179,7 @@ class Wordle:
         #print_header()
         print('Logged in as: ' + profile)
         self.correct_word = self.generate_word()
+        self.guess_counter = self.glob_guesses
         # correct_word = "shyly"
         #guess_counter = self.glob_guesses # Max number of guesses
         while self.guess_counter != 0:
@@ -187,6 +190,7 @@ class Wordle:
                 self.guess_counter -= 1
                 self.print_letters()
                 if self.win_check():
+                    self.win_check()
                     print(colored("YOU WON! GOOD JOB!", 'green'))
                     self.write_score_to_file(profile)
                     self.play_again(profile)
