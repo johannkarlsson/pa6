@@ -92,7 +92,7 @@ class MainMenu:
         if check.add_word_length_check(len(word_bank_input)):
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
             file = open(word_bank, 'a')
-        if check.duplicate_word_check(word_bank_input):
+        if check.duplicate_word_check(word_bank, word_bank_input):
             file.write(word_bank_input + '\n')
             print(f'"{word_bank_input}" added to word bank')
             file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu

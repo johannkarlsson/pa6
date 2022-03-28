@@ -1,7 +1,7 @@
 class Check:
-    def duplicate_word_check(self, word):
+    def duplicate_word_check(self, word_bank, word):
         '''Checks if word already exists in wordbank'''
-        with open('test_words.txt', 'r') as file:
+        with open(word_bank, 'r') as file:
             words = file.read()
         if word not in words:
             return True
@@ -10,11 +10,8 @@ class Check:
 
     def add_word_length_check(self, word_length):
         '''Checks if word_length is a digit between 4 and 6'''
-        if word_length.isdigit():
-            if int(word_length) > 3 and int(word_length) < 7:
-                return True
-            else:
-                return False
+        if int(word_length) > 3 and int(word_length) < 7:
+            return True
         else:
             return False
 
