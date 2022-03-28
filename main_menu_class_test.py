@@ -1,69 +1,40 @@
+from email import header
 import sys
 import os
 import time
 from wordle_class_test import Wordle
 from os.path import exists
-wordle = Wordle()
+from wordle_class_test import Wordle
+from fancy_stuff import FancyStuff
 
 # GLOBALS
 
-def print_header():
-    header = """
-----------------------------------
 
-WELCOME TO WORDLE - PYTHON EDITION
-    Author - Jóhann Karlsson
+class MainMenu:
+    def __init__(self):
+        pass
 
-----------------------------------
-"""
-    print(header)
+    def print_header(self):
+        print(FancyStuff().header)
 
-def print_main_menu():
-    main_menu ="""
-----------------------------------------------------------
+    def print_main_menu(self):
+        print(FancyStuff().menu_header)
 
-                        MAIN MENU
-
-1. Play      2. Add Words      3. Edit Game       4. Quit
-
-----------------------------------------------------------
-"""
-    print(main_menu)
-
-def main_menu():
-    print_main_menu()
-    menu_input = input("Please select an option: ")
-    if menu_input == "1":
-        play_option()
-    elif menu_input == "2":
-        add_option()
-    elif menu_input == "3":
-        edit_option()
-        main_menu()
-    elif menu_input == "4":
-        quit()
-    else:
-        print("Please enter a valid input!")
-        main_menu()
-
-""" ----------- FUN STUFF ------------- """
-def load_wordle(profile):
-    '''ANIMATION FUNCTION'''
-    print('Logging in as ' + profile)
-    animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
-    for i in range(len(animation)):
-        time.sleep(0.12)
-        sys.stdout.write("\r" + animation[i % len(animation)])
-        sys.stdout.flush()
-    print("\n")
-    wordle.play_wordle(profile)
-
-def clear_console():
-    '''HELPER FUNCTION TO CLEAR SCREEN'''
-    command = 'clear'
-    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
-        command = 'cls'
-    os.system(command)
+    def main_menu(self):
+        self.print_main_menu()
+        menu_input = input("Please select an option: ")
+        if menu_input == "1":
+            play_option()
+        elif menu_input == "2":
+            add_option()
+        elif menu_input == "3":
+            edit_option()
+            self.main_menu()
+        elif menu_input == "4":
+            quit()
+        else:
+            print("Please enter a valid input!")
+            self.main_menu()
 
 """ ----------- LOGIN OPTION ------------- """
 def play_option():
