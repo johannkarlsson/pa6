@@ -166,7 +166,7 @@ class Wordle:
 
     def play_again(self, profile):
         """ Ask user if he wants to play again """
-        play_again = input("Would you like to play again? (y/n): ")
+        play_again = input("Would you like to play again? (y/n): ").lower()
         if play_again == "y":
             self.play_wordle(profile)
         if play_again == "n":
