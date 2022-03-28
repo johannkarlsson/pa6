@@ -6,6 +6,7 @@ from wordle_class_test import Wordle
 from os.path import exists
 from wordle_class_test import Wordle
 from fancy_stuff import FancyStuff
+from checks import Check
 
 # GLOBALS
 
@@ -71,7 +72,7 @@ class MainMenu:
         print('What word would you like to append to the word bank?')
         word_bank_input = input('Input word: ')
         file = open('test_words.txt', 'a')
-        if self.duplicate_word_check(word_bank_input):
+        if Check.duplicate_word_check(word_bank_input):
             file.write(word_bank_input + '\n')
             print(f'"{word_bank_input}" added to word bank')
             file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
@@ -90,14 +91,6 @@ class MainMenu:
         else:
             print('Please enter a valid input')
             self.add_more_words()
-
-    def duplicate_word_check(self, word):
-        with open('test_words.txt', 'r') as file:
-            words = file.read()
-        if word not in words:
-            return True
-        else:
-            return False
 
     """ ----------- EDIT OPTION ------------- """
     def edit_option(self):
