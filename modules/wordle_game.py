@@ -234,7 +234,7 @@ class Wordle:
         # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
         score = math.floor(((self.guess_counter + 1) / (self.max_guesses)) * 100 * len(self.correct_word))
         f = open(file_name_path, 'a')   # Opens file in append mode
-        f.write(f"{dt_string}\nGuesses left: {self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
+        f.write(f"{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''
