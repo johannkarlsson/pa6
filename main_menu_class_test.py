@@ -142,7 +142,8 @@ def word_letters_check(word_letters):
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():
-    main_menu()
+    main_menu = MainMenu()
+    main_menu.main_menu()
 
 """ MAIN LOOP """
 while True:
