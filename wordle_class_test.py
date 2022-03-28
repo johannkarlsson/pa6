@@ -11,8 +11,6 @@ import os
 import time
 import random
 spell = SpellChecker()
-from fancy_stuff import FancyStuff
-fancy_stuff = FancyStuff()
 #TODO
 # Búa til menu, play eða edit CHECK
 # Leyfa logins, profiles CHECK
