@@ -3,10 +3,10 @@ import sys
 import os
 import time
 from os.path import exists
-from wordle_class_test import Wordle
-from fancy_stuff import FancyStuff
+from modules.wordle_game import Wordle
+from modules.fancy_stuff import FancyStuff
 fancy_stuff = FancyStuff()
-from checks import Check
+from modules.checks import Check
 check = Check()
 
 class MainMenu:

@@ -1,7 +1,6 @@
 import time
 import sys
 import os
-from wordle_class_test import Wordle
 
 
 class FancyStuff:
@@ -10,7 +9,7 @@ class FancyStuff:
 ----------------------------------
 
 WELCOME TO WORDLE - PYTHON EDITION
-    Author - Jóhann Karlsson
+    Authors - Jóhann & Bjössi
 """
         self.menu_header = """
 ------------------------------------------------------------
