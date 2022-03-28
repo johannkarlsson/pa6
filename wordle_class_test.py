@@ -64,8 +64,8 @@ class Wordle:
             return False
 
     def length_check(self):
-        """ Check if word is 5 letters """
-        if len(self.guess_word) == 5:
+        """ Check if word is length of glob_letters """
+        if len(self.guess_word) == self.glob_letters:
             return True
         return False
 
