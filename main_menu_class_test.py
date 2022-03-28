@@ -44,22 +44,27 @@ class MainMenu:
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
+        wordle = Wordle(self.max_guesses, self.word_letters)
         filename = profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
         if not os.path.exists(directory):
             os.makedirs(directory)
         file_name_path = directory+filename
         if exists(file_name_path):
-            f = open(file_name_path, 'a')   # Opens file in write mode
+            f = open(file_name_path, 'a')   # Opens file in append mode
             FancyStuff().clear_console()
-            FancyStuff().load_wordle(profile) 
-            return Wordle().play_wordle(profile)
+            FancyStuff().load_wordle(profile)
+            return self.launch_wordle(profile)
         else:
             f = open(file_name_path, 'a')
             FancyStuff().clear_console()
             print('Profile created!')
             FancyStuff().load_wordle(profile)
-            Wordle().play_wordle(profile)
+            return self.launch_wordle(profile)
+
+    def launch_wordle(self, profile):
+        wordle = Wordle(self.max_guesses, self.word_letters)
+        return wordle.play_wordle(profile)
 
     """ ----------- ADD WORDS ------------- """
     def add_option(self):
@@ -97,45 +102,43 @@ class MainMenu:
     """ ----------- EDIT OPTION ------------- """
     def edit_option(self):
         '''Edit game calls on two other functions'''
-        global glob_guesses
-        global glob_letters
-        glob_guesses = self.edit_guesses()
-        # glob_letters = edit_letters() # We don't wanna do this.
+        self.max_guesses = self.edit_guesses()
+        self.word_letters = self.edit_letters()
 
     def edit_guesses(self):
         '''Edit how many guesses'''
-        self.max_guesses = input('How many guesses would you like to have? (1-6): ')
-        if self.max_guesses_check(self.max_guesses):
-            return int(self.max_guesses)
+        max_guesses_input = (input('How many guesses would you like to have? (1-10): '))
+        if self.max_guesses_check(max_guesses_input):
+            self.max_guesses = max_guesses_input
         else:
             print('Please enter a valid input')
             self.edit_guesses()
 
     def edit_letters(self):
         '''Edit length of word'''
-        self.word_letters = input('How many letters would you like to guess? (1-6): ')
-        if self.word_letters_check(self.word_letters):
-            return int(self.word_letters)
+        word_letters_input = input('How many letters would you like to guess? (4-6): ')
+        if self.word_letters_check(word_letters_input):
+            self.word_letters = word_letters_input
         else:
             print('Please enter a valid input')
             self.edit_letters()
 
-    def max_guesses_check(self):
+    def max_guesses_check(self, max_guesses):
         '''HELPER'''
-        '''Checks if max_guesses is a digit between 1 and 6'''
-        if self.max_guesses.isdigit():
-            if int(self.max_guesses) > 0 and int(self.max_guesses) < 7:
+        '''Checks if max_guesses is a digit between 1 and 10'''
+        if max_guesses.isdigit():
+            if int(max_guesses) > 0 and int(max_guesses) < 11:
                 return True
             else:
                 return False
         else:
             return False
 
-    def word_letters_check(self):
+    def word_letters_check(self, word_letters):
         '''HELPER'''
-        '''Checks if word_letters is a digit between 1 and 6'''
-        if self.word_letters.isdigit():
-            if int(self.word_letters) > 0 and int(self.word_letters) < 7:
+        '''Checks if word_letters is a digit between 4 and 6'''
+        if word_letters.isdigit():
+            if int(word_letters) > 3 and int(word_letters) < 7:
                 return True
             else:
                 return False
