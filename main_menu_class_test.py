@@ -34,10 +34,27 @@ class MainMenu:
             self.edit_option()
             self.main_menu()
         elif menu_input == "4":
+            self.print_player_history()
+        elif menu_input == "5":
             quit()
         else:
             print("Please enter a valid input!")
             self.main_menu()
+
+    def print_player_history(self):
+        '''Prints all player profiles'''
+        player_history = input("What player history would you like to see?: ").upper()
+        filename = player_history + '.txt'
+        directory = "player_profiles/"
+        file_name_path = directory+filename
+        if exists(file_name_path):
+            with open(file_name_path, 'r') as f:
+                print(f.read())
+                anykey = input("Press enter to return to main menu: ")
+        else:
+            print('Player does not exist')
+            self.print_player_history()
+
 
     """ ----------- LOGIN OPTION ------------- """
     def play_option(self): # Spyr notanda um nafn hans til að búa til skrá
