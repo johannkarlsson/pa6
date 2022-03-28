@@ -88,29 +88,31 @@ class MainMenu:
     """ ----------- ADD WORDS ------------- """
     def add_option(self):
         print('What word would you like to append to the word bank?')
-        word_bank_input = input('Input word: ')
-        if check.add_word_length_check(len(word_bank_input)):
+        while True:
+            word_bank_input = input('Input word: ')
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
-            file = open(word_bank, 'a')
-        if check.duplicate_word_check(word_bank, word_bank_input):
-            file.write(word_bank_input + '\n')
-            print(f'"{word_bank_input}" added to word bank')
-            file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
-            self.add_more_words()
-        else:
-            print('Word already in word bank')
-            self.add_more_words()
+            try:
+                if check.add_word_length_check(len(word_bank_input)):
+                    file = open(word_bank, 'a')
+                if check.duplicate_word_check(word_bank, word_bank_input):
+                    file.write(word_bank_input + '\n')
+                    print(f'"{word_bank_input}" added to word bank')
+                    file.close() # Uppfærist með hverju instance-i. Annars var það bara þegar forritið hættir keyrslu
+                    self.add_more_words()
+                    return
+                else:
+                    print('Word already in word bank')
+            except FileNotFoundError:
+                print("Please enter word of length 4-6")
 
     def add_more_words(self):
         prompt = input('Would you like to add another word? (y/n): ').lower()
         if prompt == 'y':
             self.add_option()
         elif prompt == 'n':
-            fancy_stuff.clear_console()
-            self.main_menu()
+            return
         else:
             print('Please enter a valid input')
-            self.add_more_words()
 
     """ ----------- EDIT OPTION ------------- """
     def edit_option(self):
@@ -120,21 +122,19 @@ class MainMenu:
 
     def edit_guesses(self):
         '''Edit how many guesses'''
-        max_guesses_input = input('How many guesses would you like to have? (1-10): ')
-        if check.max_guesses_check(max_guesses_input):
-            return int(max_guesses_input)
-        else:
+        while True:
+            max_guesses_input = input('How many guesses would you like to have? (1-10): ')
+            if check.max_guesses_check(max_guesses_input):
+                return int(max_guesses_input)
             print('Please enter a valid input')
-            self.edit_guesses()
 
     def edit_letters(self):
         '''Edit length of word'''
-        word_letters_input = input('How many letters would you like to guess? (4-6): ')
-        if check.word_letters_check(word_letters_input):
-            return int(word_letters_input)
-        else:
+        while True:
+            word_letters_input = input('How many letters would you like to guess? (4-6): ')
+            if check.word_letters_check(word_letters_input):
+                return int(word_letters_input)
             print('Please enter a valid input')
-            self.edit_letters()
 
 """ ---------- MAIN PROGRAM ----------"""
 def main():

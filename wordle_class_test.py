@@ -65,7 +65,7 @@ class Wordle:
                 print()
                 return False
         else:
-            print("Word must be exactly 5 letters!")
+            print(f"Word must be exactly {self.letter_count} letters!")
             print()
             return False
 
@@ -106,7 +106,7 @@ class Wordle:
         """ Main logic for checking letters and printing the Wordle """
         already_printed = [] # Safeguard to avoid printing a yellow letter 
         correct_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
-        print("_" * 21)
+        print("_" * (self.letter_count * 4.2))
         print("|", end="")
         correct_word = self.correct_word
         guess_word = self.guess_word
