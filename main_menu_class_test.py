@@ -50,7 +50,7 @@ class MainMenu:
         if exists(file_name_path):
             with open(file_name_path, 'r') as f:
                 print(f.read())
-                anykey = input("Press enter to return to main menu: ")
+                input("Press ENTER to return to main menu: ")
         else:
             print('Player does not exist')
             self.print_player_history()
