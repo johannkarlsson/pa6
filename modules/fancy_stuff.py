@@ -27,7 +27,7 @@ WELCOME TO WORDLE - PYTHON EDITION
         print('Logging in as ' + profile)
         animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
         for i in range(len(animation)):
-            time.sleep(0.12)
+            time.sleep(0.10)
             sys.stdout.write("\r" + animation[i % len(animation)])
             sys.stdout.flush()
         print("\n")
