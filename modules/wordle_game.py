@@ -27,7 +27,9 @@ class Wordle:
         self.guess_counter = self.max_guesses
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
-        self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+        self.wrongly_guessed_letters = []
+        # self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+        self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
         self.correct_word = None
         self.guess_word = None
         self.win_count = 0
@@ -108,7 +110,6 @@ class Wordle:
         """ Main logic for checking letters and printing the Wordle """
         already_printed = [] # Safeguard to avoid printing a yellow letter 
         correct_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
-        # print("_" * 21)
         box = (4 * self.letter_count) + 1
         print("_" * box)
         print("|", end="")
@@ -149,24 +150,45 @@ class Wordle:
                     duplicates.append(char)
         return duplicates
 
+    # def eliminate_letters2(self):
+    #     """ Remove already used letters from the letter list """
+    #     for letter in self.guess_word:
+    #         if letter in self.letters and letter not in self.correct_word:
+    #             self.letters.remove(letter)
+    #     return self.letters
+
     def eliminate_letters(self):
-        """ Remove already used letters from the letter list """
         for letter in self.guess_word:
-            if letter in self.letters and letter not in self.correct_word:
-                self.letters.remove(letter)
+            for lst in self.letters:
+                if letter in lst and letter not in self.correct_word:
+                    index = lst.index(letter)
+                    lst[index] = ' '
         return self.letters
+        
+    # def print_letters2(self):
+    #     """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
+    #     print("Available letters: ", end='')
+    #     for letter in self.letters:
+    #         if letter in self.green_guessed_letters:
+    #             print(colored(letter, 'green'), end= ' ')
+    #         elif letter in self.yellow_guessed_letters:
+    #             print(colored(letter, 'yellow'), end= ' ')
+    #         else:
+    #             print(letter, end=' ')
+    #     print()
 
     def print_letters(self):
         """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
-        print("Available letters: ", end='')
-        for letter in self.letters:
-            if letter in self.green_guessed_letters:
-                print(colored(letter, 'green'), end= ' ')
-            elif letter in self.yellow_guessed_letters:
-                print(colored(letter, 'yellow'), end= ' ')
-            else:
-                print(letter, end=' ')
-        print()
+        print("Available letters: ")
+        for row in self.letters:
+            for letter in row:
+                if letter in self.green_guessed_letters:
+                    print(colored(letter, 'green'), end= ' ')
+                elif letter in self.yellow_guessed_letters:
+                    print(colored(letter, 'yellow'), end= ' ')
+                else:
+                    print(letter, end=' ')
+            print()
 
     def win_check(self):
         """ Check if word matches and thus game is won """
