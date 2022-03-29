@@ -137,18 +137,21 @@ class MainMenu:
     """ -------------- 4. HISTORY OPTION ----------------- """
     
     def print_player_history(self):
-        '''Prints all player profiles'''
-        player_history = input("What player history would you like to see?: ").upper()
-        filename = player_history + '.txt'
-        directory = "player_profiles/"
-        file_name_path = directory+filename
-        if exists(file_name_path):
-            with open(file_name_path, 'r') as f:
-                print(f.read())
-                input("Press ENTER to return to main menu: ")
-        else:
-            print('Player does not exist')
-            self.print_player_history()
+        while True:
+            '''Prints all player profiles'''
+            player = input("What player history would you like to see? (ENTER to exit): ").upper()
+            if player == '':
+                return
+            filename = player + '.txt'
+            directory = "player_profiles/"
+            file_name_path = directory+filename
+            if exists(file_name_path):
+                with open(file_name_path, 'r') as f:
+                    print(f.read())
+                    input("Press ENTER to return to main menu: ")
+                    return
+            else:
+                print('Player does not exist')
 
 
 """ -------------------- MAIN PROGRAM --------------------"""
