@@ -10,6 +10,8 @@ class MainMenu:
     def __init__(self):
         self.max_guesses = 5 # Alvöru wordle notar 6 en verkefnalýsing segir 5 boo
         self.word_letters = 5
+        self.player_dir = 'player_profiles/'
+        self.wordbank_dir = 'wordlists/'
 
 
     """ ------------- MAIN MENU -------------"""
@@ -50,11 +52,9 @@ class MainMenu:
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
-        filename = profile + '.txt'         # Create full file name
-        directory = "player_profiles/"      # Create full file path
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        file_name_path = directory+filename
+        if not os.path.exists(self.player_dir):
+            os.makedirs(self.player_dir)
+        file_name_path = self.get_player_file_name_path(profile)
         if exists(file_name_path):
             f = open(file_name_path, 'a')   # Opens file in append mode
             fancy_stuff.clear_console()
@@ -80,8 +80,7 @@ class MainMenu:
             if word_bank_input == '':
                 return
             word_bank = f'wordlist_{len(word_bank_input)}.txt'
-            directory = 'wordlists/'
-            file_name_path = directory+word_bank
+            file_name_path = self.wordbank_dir+word_bank
             try:
                 if check.add_word_length_check(len(word_bank_input)):
                     file = open(file_name_path, 'a')
@@ -133,13 +132,12 @@ class MainMenu:
     
     def print_player_history(self):
         while True:
-            '''Prints all player profiles'''
+            '''Prints player profiles'''
             player = input("What player history would you like to see? (ENTER to exit): ").upper()
             if player == '':
                 return
             filename = player + '.txt'
-            directory = "player_profiles/"
-            file_name_path = directory+filename
+            file_name_path = self.player_dir+filename
             if exists(file_name_path):
                 with open(file_name_path, 'r') as f:
                     print(f.read())
@@ -148,11 +146,10 @@ class MainMenu:
             else:
                 print('Player does not exist')
 
-    def get_player_file_name_path(self):
+    def get_player_file_name_path(self, profile):
         '''Returns the full file path of the player profile'''
-        filename = self.profile + '.txt'         # Create full file name
-        directory = "player_profiles/"      # Create full file path
-        file_name_path = directory+filename
+        filename = profile + '.txt'         # Create full file name
+        file_name_path = self.player_dir+filename
         return file_name_path
 
 
