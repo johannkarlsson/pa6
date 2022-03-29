@@ -14,6 +14,9 @@ class MainMenu:
         self.max_guesses = 6
         self.word_letters = 5
 
+
+    """ ------------- MAIN MENU -------------"""
+
     def print_header(self):
         print(fancy_stuff.header)
 
@@ -21,39 +24,30 @@ class MainMenu:
         print(fancy_stuff.menu_header)
 
     def main_menu(self):
-        self.print_main_menu()
-        menu_input = input("Please select an option: ")
-        if menu_input == "1":
-            return self.play_option()
-        elif menu_input == "2":
-            self.add_option()
-        elif menu_input == "3":
-            self.edit_option()
-            self.main_menu()
-        elif menu_input == "4":
-            self.print_player_history()
-        elif menu_input.lower() == "q":
-            quit()
-        else:
-            print("Please enter a valid input!")
-            self.main_menu()
+        while True:
+            fancy_stuff.clear_console()
+            self.print_main_menu()
+            self.main_menu_options()
 
-    def print_player_history(self):
-        '''Prints all player profiles'''
-        player_history = input("What player history would you like to see?: ").upper()
-        filename = player_history + '.txt'
-        directory = "player_profiles/"
-        file_name_path = directory+filename
-        if exists(file_name_path):
-            with open(file_name_path, 'r') as f:
-                print(f.read())
-                input("Press ENTER to return to main menu: ")
-        else:
-            print('Player does not exist')
-            self.print_player_history()
+    def main_menu_options(self):
+        while True:
+            menu_input = input("Please select an option: ")
+            if menu_input == "1":
+                return self.play_option()
+            elif menu_input == "2":
+                return self.add_option()
+            elif menu_input == "3":
+                return self.edit_option()
+            elif menu_input == "4":
+                return self.print_player_history()
+            elif menu_input.lower() == "q":
+                quit()
+            else:
+                print("Please enter a valid input!")
 
 
-    """ ----------- LOGIN OPTION ------------- """
+    """ ----------- 1. PLAY OPTION ------------- """
+
     def play_option(self): # Spyr notanda um nafn hans til að búa til skrá
         profile = input("Please enter your profile name: ").upper()
         return self.create_player_file(profile)
@@ -82,7 +76,8 @@ class MainMenu:
         wordle = Wordle(profile, self.max_guesses, self.word_letters)
         return wordle.play_wordle()
 
-    """ ----------- ADD WORDS ------------- """
+
+    """ ----------- 2. ADD WORDS OPTION ------------- """
     def add_option(self):
         print('What word would you like to append to the word bank? (ENTER to exit)')
         while True:
@@ -115,7 +110,8 @@ class MainMenu:
         else:
             print('Please enter a valid input')
 
-    """ ----------- EDIT OPTION ------------- """
+
+    """ ----------- 3. EDIT OPTION ------------- """
     def edit_option(self):
         '''Edit game calls on two other functions'''
         self.max_guesses = self.edit_guesses()
@@ -137,19 +133,37 @@ class MainMenu:
                 return int(word_letters_input)
             print('Please enter a valid input')
 
-""" ---------- MAIN PROGRAM ----------"""
+
+    """ -------------- 4. HISTORY OPTION ----------------- """
+    
+    def print_player_history(self):
+        '''Prints all player profiles'''
+        player_history = input("What player history would you like to see?: ").upper()
+        filename = player_history + '.txt'
+        directory = "player_profiles/"
+        file_name_path = directory+filename
+        if exists(file_name_path):
+            with open(file_name_path, 'r') as f:
+                print(f.read())
+                input("Press ENTER to return to main menu: ")
+        else:
+            print('Player does not exist')
+            self.print_player_history()
+
+
+""" -------------------- MAIN PROGRAM --------------------"""
+
 def main():
     while True:
         fancy_stuff.clear_console()
         main_menu = MainMenu()
         main_menu.main_menu()
-    else:
-        quit()
         
+main()
 
-""" MAIN LOOP """
-while True:
-    if main():
-        pass
-    else:
-        break
+# """ MAIN LOOP """
+# while True:
+#     if main():
+#         pass
+#     else:
+#         break
