@@ -1,2 +1,2 @@
-termcolor
-pyspellchecker
+pyspellchecker==0.6.3
+termcolor==1.1.0
