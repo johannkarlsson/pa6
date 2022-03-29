@@ -180,6 +180,7 @@ class Wordle:
         play_again_input = input("Would you like to play again? (y/n): ").lower()
         if play_again_input == "y":
             self.clear_console()
+            self.reset_letters()
             self.play_wordle()
         if play_again_input == "n":
             return
@@ -240,9 +241,13 @@ class Wordle:
             f.write(f"\n*LOSS*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: 0\n-----------------------------------------------\n")
 
     def get_score(self):
-        guesses_used = self.max_guesses - self.guess_counter
         score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word))
         return score
+
+    def reset_letters(self):
+        self.green_guessed_letters = []
+        self.yellow_guessed_letters = []
+        self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
 
 
     def clear_console(self):
