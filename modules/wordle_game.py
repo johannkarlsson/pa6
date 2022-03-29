@@ -215,16 +215,16 @@ class Wordle:
                 self.win_count += 1
                 print(colored("YOU WON! GOOD JOB!", 'green'))
                 print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file() # Senda inn W maybe?
+                self.write_score_to_file('W') # Senda inn W maybe?
     
     def resolve_loss(self):
                 print(colored("YOU LOSE! SORRY", 'red'))
                 self.loss_count += 1
                 print(f"The correct word was '{self.correct_word}'")
                 print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file() # Senda inn L maybe?
+                self.write_score_to_file('L') # Senda inn L maybe?
 
-    def write_score_to_file(self):
+    def write_score_to_file(self, w_or_l):
         '''Creates text files to store player scores'''
         filename = self.profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
@@ -234,7 +234,10 @@ class Wordle:
         # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
         score = math.floor(((self.guess_counter + 1) / (self.max_guesses)) * 100 * len(self.correct_word))
         f = open(file_name_path, 'a')   # Opens file in append mode
-        f.write(f"{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
+        if w_or_l == 'W':
+            f.write(f"*WIN*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
+        else:
+            f.write(f"*LOSS*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter} Answer: {self.correct_word}\nScore: 0\n-----------------------------------------------\n")
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''
