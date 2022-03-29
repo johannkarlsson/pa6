@@ -1,13 +1,10 @@
-# from email import header
-# import sys
 import os
-# import time
-from os.path import exists
-from modules.wordle_game import Wordle
-from modules.fancy_stuff import FancyStuff
-fancy_stuff = FancyStuff()
-from modules.checks import Check
+from os.path                import exists
+from modules.wordle_game    import Wordle
+from modules.fancy_stuff    import FancyStuff
+from modules.checks         import Check
 check = Check()
+fancy_stuff = FancyStuff()
 
 class MainMenu:
     def __init__(self):
@@ -16,7 +13,6 @@ class MainMenu:
 
 
     """ ------------- MAIN MENU -------------"""
-
     def print_header(self):
         print(fancy_stuff.header)
 
@@ -54,7 +50,6 @@ class MainMenu:
 
     def create_player_file(self, profile):
         '''Creates text files to store player scores'''
-        #wordle = Wordle(self.max_guesses, self.word_letters)
         filename = profile + '.txt'         # Create full file name
         directory = "player_profiles/"      # Create full file path
         if not os.path.exists(directory):
@@ -153,6 +148,13 @@ class MainMenu:
             else:
                 print('Player does not exist')
 
+    def get_player_file_name_path(self):
+        '''Returns the full file path of the player profile'''
+        filename = self.profile + '.txt'         # Create full file name
+        directory = "player_profiles/"      # Create full file path
+        file_name_path = directory+filename
+        return file_name_path
+
 
 """ -------------------- MAIN PROGRAM --------------------"""
 
@@ -162,11 +164,5 @@ def main():
         main_menu = MainMenu()
         main_menu.main_menu()
         
-main()
-
-# """ MAIN LOOP """
-# while True:
-#     if main():
-#         pass
-#     else:
-#         break
+if __name__ == "__main__":
+    main()

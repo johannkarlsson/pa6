@@ -1,24 +1,11 @@
-# from colorama import init
-
-#from glob import glob
-# from threading      import get_ident
 from spellchecker   import SpellChecker
-# from os.path        import exists
 from termcolor      import colored
 from datetime       import datetime
-# import sys
 import os
-# import time
 import random
 import math
 spell = SpellChecker()
-#TODO
-# Búa til menu, play eða edit CHECK
-# Leyfa logins, profiles CHECK
-# Finna hvernig við score-um leikinn
-# Geyma scores með profile name í txt skjali CHECK
-# Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
-# Giska rett í síðasta en fæ you lose
+
 class Wordle:
     def __init__(self, profile, max_guesses = 5, letter_count = 5):
         self.profile = profile
@@ -35,7 +22,7 @@ class Wordle:
         self.word_list = self.get_word_list()
 
 
-    """ ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
+    """ ----------- STARTUP ------------- """
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
         directory = "wordlists/"
@@ -84,10 +71,8 @@ class Wordle:
         return False
 
     """ ----------- LOGIC -------------"""
-
     def print_guess_count(self):
         """ Print the current guess number in the appropriate color """
-        #global max_guesses
         if (0.66 * self.max_guesses) <= self.guess_counter <= self.max_guesses:
             print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.max_guesses}",'green'))
 
@@ -149,6 +134,7 @@ class Wordle:
         return duplicates
 
     def eliminate_letters(self):
+        ''' Replaces guessed letters with spaces to keep the keyboard layout intact '''
         for letter in self.guess_word:
             for lst in self.letters:
                 if letter in lst and letter not in self.correct_word:
@@ -159,8 +145,8 @@ class Wordle:
     def print_letters(self):
         """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
         print("Available letters: ")
-        for row in self.letters:
-            for letter in row:
+        for row in self.letters: # For each row in the keyboard
+            for letter in row: # For each letter in the row
                 if letter in self.green_guessed_letters:
                     print(colored(letter, 'green'), end= ' ')
                 elif letter in self.yellow_guessed_letters:
@@ -214,25 +200,24 @@ class Wordle:
                 return
 
     def resolve_win(self):
-                self.win_count += 1
-                print(colored("YOU WON! GOOD JOB!", 'green'))
-                print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file('W') # Senda inn W maybe?
+        '''Keeps count of wins during current session'''
+        self.win_count += 1
+        print(colored("YOU WON! GOOD JOB!", 'green'))
+        print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
+        self.write_score_to_file('W')
     
     def resolve_loss(self):
-                print(colored("YOU LOSE! SORRY", 'red'))
-                self.loss_count += 1
-                print(f"The correct word was '{self.correct_word}'")
-                print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file('L') # Senda inn L maybe?
+        '''Keeps count of losses during current session'''
+        self.loss_count += 1
+        print(colored("YOU LOSE! SORRY", 'red'))
+        print(f"The correct word was '{self.correct_word}'")
+        print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
+        self.write_score_to_file('L')
 
     def write_score_to_file(self, w_or_l):
         '''Creates text files to store player scores'''
-        filename = self.profile + '.txt'         # Create full file name
-        directory = "player_profiles/"      # Create full file path
-        file_name_path = directory+filename
-        now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        file_name_path = self.get_player_file_name_path()
+        dt_string = self.get_current_date_time()
         score = self.get_score()
         f = open(file_name_path, 'a')   # Opens file in append mode
         if w_or_l == 'W':
@@ -240,11 +225,25 @@ class Wordle:
         else:
             f.write(f"\n*LOSS*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: 0\n-----------------------------------------------\n")
 
+    def get_current_date_time(self):
+        '''Returns current date and time'''
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        return dt_string
+
+    def get_player_file_name_path(self):
+        '''Returns the full file path of the player profile'''
+        filename = self.profile + '.txt'         # Create full file name
+        directory = "player_profiles/"      # Create full file path
+        file_name_path = directory+filename
+        return file_name_path
+
     def get_score(self):
         score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word))
         return score
 
     def reset_letters(self):
+        '''Resets the letters to the original lists when you play again'''
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
