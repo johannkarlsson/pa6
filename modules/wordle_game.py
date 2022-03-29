@@ -20,15 +20,13 @@ spell = SpellChecker()
 # Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
 # Giska rett í síðasta en fæ you lose
 class Wordle:
-    def __init__(self, profile, max_guesses = 6, letter_count = 5):
+    def __init__(self, profile, max_guesses = 5, letter_count = 5):
         self.profile = profile
         self.max_guesses = max_guesses
         self.letter_count = letter_count
         self.guess_counter = self.max_guesses
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
-        self.wrongly_guessed_letters = []
-        # self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
         self.correct_word = None
         self.guess_word = None
@@ -150,13 +148,6 @@ class Wordle:
                     duplicates.append(char)
         return duplicates
 
-    # def eliminate_letters2(self):
-    #     """ Remove already used letters from the letter list """
-    #     for letter in self.guess_word:
-    #         if letter in self.letters and letter not in self.correct_word:
-    #             self.letters.remove(letter)
-    #     return self.letters
-
     def eliminate_letters(self):
         for letter in self.guess_word:
             for lst in self.letters:
@@ -164,18 +155,6 @@ class Wordle:
                     index = lst.index(letter)
                     lst[index] = ' '
         return self.letters
-        
-    # def print_letters2(self):
-    #     """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
-    #     print("Available letters: ", end='')
-    #     for letter in self.letters:
-    #         if letter in self.green_guessed_letters:
-    #             print(colored(letter, 'green'), end= ' ')
-    #         elif letter in self.yellow_guessed_letters:
-    #             print(colored(letter, 'yellow'), end= ' ')
-    #         else:
-    #             print(letter, end=' ')
-    #     print()
 
     def print_letters(self):
         """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
@@ -253,13 +232,18 @@ class Wordle:
         file_name_path = directory+filename
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
-        score = math.floor(((self.guess_counter + 1) / (self.max_guesses)) * 100 * len(self.correct_word))
+        score = self.get_score()
         f = open(file_name_path, 'a')   # Opens file in append mode
         if w_or_l == 'W':
             f.write(f"\n*WIN*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
         else:
             f.write(f"\n*LOSS*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: 0\n-----------------------------------------------\n")
+
+    def get_score(self):
+        guesses_used = self.max_guesses - self.guess_counter
+        score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word))
+        return score
+
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''

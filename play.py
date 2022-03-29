@@ -11,7 +11,7 @@ check = Check()
 
 class MainMenu:
     def __init__(self):
-        self.max_guesses = 6 # Alvöru wordle notar 6 en verkefnalýsing segir 5 boo
+        self.max_guesses = 5 # Alvöru wordle notar 6 en verkefnalýsing segir 5 boo
         self.word_letters = 5
 
 
