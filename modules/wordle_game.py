@@ -40,7 +40,7 @@ class Wordle:
 
     def get_input(self):
         """ Get user input """
-        guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
+        guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
         return guess_word
 
     """ ----------- CHECKS ------------- """
@@ -107,13 +107,13 @@ class Wordle:
         for index, letter in enumerate(guess_word):
             
             if guess_word[index] == correct_word[index]:
-                print(colored(f" {letter} ", 'white', 'on_green'), end = "|")
+                print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.append(guess_word[index])
                 if guess_word[index] not in duplicates:
                     already_printed.append(letter)
 
             elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in correct_letters_in_current_guess:
-                print(colored(f" {letter} ", 'white', 'on_yellow'), end = "|")
+                print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
                 self.yellow_guessed_letters.append(guess_word[index])
 
