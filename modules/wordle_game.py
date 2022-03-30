@@ -40,8 +40,12 @@ class Wordle:
 
     def get_input(self):
         """ Get user input """
-        guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
-        return guess_word
+        try:
+            guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
+            return guess_word
+        except KeyboardInterrupt: # Prófa vera fyndinn haha
+            print()
+            print("Ctrl+c huh? You won't get away this easily!")
 
     """ ----------- CHECKS ------------- """
     def input_check(self):
@@ -60,9 +64,12 @@ class Wordle:
 
     def length_check(self):
         """ Check if word is length of letter_count """
-        if len(self.guess_word) == self.letter_count:
-            return True
-        return False
+        try:
+            if len(self.guess_word) == self.letter_count:
+                return True
+            return False
+        except TypeError:
+            print()
 
     def dictionary_check(self):
         """ Check if word is in the english dictionary """
@@ -247,7 +254,6 @@ class Wordle:
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
-
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''
