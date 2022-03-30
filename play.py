@@ -56,7 +56,7 @@ class MainMenu:
         '''Creates text files to store player scores'''
         if not os.path.exists(self.player_dir):
             os.makedirs(self.player_dir)
-        file_name_path = self.get_player_file_name_path(profile)
+        file_name_path = self.player_dir+profile+'.txt'
         if exists(file_name_path):
             f = open(file_name_path, 'a')   # Opens file in append mode
             fancy_stuff.clear_console()
@@ -133,13 +133,12 @@ class MainMenu:
     """ -------------- 4. HISTORY OPTION ----------------- """
     
     def print_player_history(self):
+        '''Prints player profiles'''
         while True:
-            '''Prints player profiles'''
             player = input("What player history would you like to see? (ENTER to exit): ").upper()
             if player == '':
                 return
-            filename = player + '.txt'
-            file_name_path = self.player_dir+filename
+            file_name_path = self.player_dir+player+'.txt'
             if exists(file_name_path):
                 with open(file_name_path, 'r') as f:
                     print(f.read())
@@ -147,14 +146,7 @@ class MainMenu:
                     return
             else:
                 print('Player does not exist')
-
-    def get_player_file_name_path(self, profile):
-        '''Returns the full file path of the player profile'''
-        filename = profile + '.txt'         # Create full file name
-        file_name_path = self.player_dir+filename
-        return file_name_path
-
-
+                
 """ -------------------- MAIN PROGRAM --------------------"""
 
 def main():
