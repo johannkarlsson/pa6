@@ -1,10 +1,8 @@
-#from spellchecker   import SpellChecker
 from termcolor      import colored
 from datetime       import datetime
 import os
 import random
 import math
-#spell = SpellChecker()
 
 class Wordle:
     def __init__(self, profile, max_guesses = 5, letter_count = 5):
@@ -25,6 +23,7 @@ class Wordle:
 
 
     """ ----------- STARTUP ------------- """
+
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
         directory = "wordlists/"
@@ -42,6 +41,7 @@ class Wordle:
 
 
     """ ----------- MAIN GAME -----------"""
+
     def play_wordle(self):
         print('Logged in as: ' + self.profile)
         self.correct_word = self.generate_word()
@@ -70,11 +70,13 @@ class Wordle:
                 self.play_again()
                 return
 
+
     """ ----------- CHECKS ------------- """
+    
     def input_check(self):
         """ Check if word meets requirements """
         if self.length_check(): # Check if the length requirement is met
-            if self.dictionary_check(): # Check if the word is a real english word
+            if self.dictionary_check(): # Check if the word is a real english word from the word list
                 return True
             else:
                 print()
@@ -102,15 +104,20 @@ class Wordle:
             return True
         return False
 
+
     """ ----------- LOGIC -------------"""
+
     def get_input(self):
         """ Get user input """
-        try:
-            guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
-            return guess_word
-        except KeyboardInterrupt: # Prófa vera fyndinn haha
-            print()
-            print("Ctrl+c huh? You won't get away this easily!")
+        while True:
+            try:
+                guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
+                return guess_word
+            except KeyboardInterrupt: # Prófa vera fyndinn haha
+                print()
+                print()
+                print(colored("Ctrl+c huh? You won't get away that easily!", 'red'))
+
 
     def print_guess_count(self):
         """ Print the current guess number in the appropriate color """
@@ -139,9 +146,9 @@ class Wordle:
         print("|", end="")
         correct_word = self.correct_word
         guess_word = self.guess_word
-        duplicates_printed = {}
+        duplicates_printed = {}             # A dictionary to keep track of which duplicate letters have been printed and how often.
         
-        for index, letter in enumerate(guess_word):                          # Begin by asserting which letter should be green. This is done to avoid letters being printed as yellow, when they should be green later in the word.
+        for index, letter in enumerate(guess_word):        # Begin by asserting which letter should be green. This is done to avoid letters being printed as yellow, when they should be green later in the word.
                 if guess_word[index] == correct_word[index]:
                     green_letters_in_current_guess.add(letter)
 
@@ -151,38 +158,41 @@ class Wordle:
             if guess_word[index] == correct_word[index]:    
                 print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.add(letter)
-                if guess_word[index] not in self.duplicate_letters_in_correct_word: # Add the letter to the already_printed list to avoid it being printed yellow later
-                    already_printed.append(letter)
-                else:                                                         # unless it is a duplicate letter.
-                    try:
-                        duplicates_printed[letter] += 1                           # update how many instances of the duplicate letter have been printed
-                    except KeyError:
-                        duplicates_printed[letter] = 1
-                    if duplicates_printed[letter] == self.duplicate_letters_in_correct_word[letter]:    # If the duplicate letter has been printed the correct number of times as yellow/green, add it to already printed, so it will be grey
+                if guess_word[index] in self.duplicate_letters_in_correct_word: # If the letter is a duplicate letter
+                    self.add_to_duplicates_printed(duplicates_printed, letter)      # Add to its count
+                    if duplicates_printed[letter] == self.duplicate_letters_in_correct_word[letter]:    # If the duplicate letter has been printed the correct number of times as yellow/green, add it to already printed, so it will now be grey
                         already_printed.append(letter)
 
-            # THE LETTER IS A YELLOW LETTER THAT IS NOT A DUPLICATE
+            # THE LETTER IS A YELLOW LETTER AND IS NOT A DUPLICATE
             elif letter in correct_word and letter not in self.duplicate_letters_in_correct_word and letter not in green_letters_in_current_guess:
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
-                already_printed.append(letter)
+                already_printed.append(letter) # This letter appears only once in the correct word so we add it to "already_printed" which will stop it from being printed yellow again.
                 self.yellow_guessed_letters.add(letter)
 
-            # THE LETTER IS A YELLOW LETTER AND A DUPLICATE
+            # THE LETTER IS A YELLOW LETTER AND IS A DUPLICATE
             elif letter in correct_word and letter not in already_printed and letter in self.duplicate_letters_in_correct_word:
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
-                try:
-                    duplicates_printed[letter] += 1                           # update how many instances of the duplicate letter have been printed
-                except KeyError:
-                    duplicates_printed[letter] = 1                            # update how many instances of the duplicate letter have been printed
-                if duplicates_printed[letter] == self.duplicate_letters_in_correct_word[letter]:  # If the duplicate letter has been printed the correct number of times as yellow/green, add it to already printed, so it will be grey
+                self.add_to_duplicates_printed(duplicates_printed, letter)
+                if duplicates_printed[letter] == self.duplicate_letters_in_correct_word[letter]:  # If the duplicate letter has been printed the correct number of times as yellow/green, add it to already printed, so it will now grey
                     already_printed.append(letter)
                 self.yellow_guessed_letters.add(letter)
             
             # THE LETTER IS A GREY LETTER
             else:
                 print(colored(f" {letter} ", 'white',), end='|')
+
         print()
         print("‾" * box)
+    
+    def add_to_duplicates_printed(self, duplicates_printed, letter):
+        """ Helper function for print_results"""
+        duplicates_printed = duplicates_printed
+        letter = letter
+        try:
+            duplicates_printed[letter] += 1                           # update how many instances of the duplicate letter have been printed
+        except KeyError:
+            duplicates_printed[letter] = 1                            # this is the first instance of the duplicate, create the key
+        return duplicates_printed
 
 
     def duplicate_letter_check(self):

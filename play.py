@@ -1,4 +1,3 @@
-import time
 import os
 from os.path                import exists
 from modules.wordle_game    import Wordle
@@ -32,6 +31,7 @@ class MainMenu:
             self.main_menu_options()
 
     def main_menu_options(self):
+        """ The main menu options functionality"""
         while True:
             menu_input = input("Please select an option: ")
             if menu_input == "1":

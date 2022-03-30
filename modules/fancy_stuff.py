@@ -42,6 +42,7 @@ class FancyStuff:
         os.system(command)
 
     def print_header(self):
+        """ Print the splash screen on launch """
         print(self.header)
-        time.sleep(3)
+        time.sleep(1.5)
         return
