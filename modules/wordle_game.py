@@ -9,11 +9,11 @@ spell = SpellChecker()
 class Wordle:
     def __init__(self, profile, max_guesses = 5, letter_count = 5):
         self.profile = profile
-        self.max_guesses = max_guesses
-        self.letter_count = letter_count
+        self.max_guesses = max_guesses # How many guesses are allowed
+        self.letter_count = letter_count # How many letters we are playing
         self.guess_counter = self.max_guesses
-        self.green_guessed_letters = []
-        self.yellow_guessed_letters = []
+        self.green_guessed_letters = [] # Keeps track of letters that should be printed green, when available letters are printed.
+        self.yellow_guessed_letters = [] # Keeps track of letters that should be printed yellow, when available letters are printed.
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
         self.correct_word = None
         self.guess_word = None
@@ -38,27 +38,49 @@ class Wordle:
         word = (random.choice(word_list)).upper()
         return word
 
-    def get_input(self):
-        """ Get user input """
-        try:
-            guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
-            return guess_word
-        except KeyboardInterrupt: # Prófa vera fyndinn haha
-            print()
-            print("Ctrl+c huh? You won't get away this easily!")
+
+    """ ----------- MAIN GAME -----------"""
+    def play_wordle(self):
+        print('Logged in as: ' + self.profile)
+        self.correct_word = self.generate_word()
+        self.guess_counter = self.max_guesses
+        while self.guess_counter != 0:                      # Until all guesses are used up
+            self.print_guess_count()                        # Print the amount of guesses left
+            self.print_letters()                            # Print the letters that are available to the player
+            self.guess_word = self.get_input()              # Get the guess from player
+            if self.guess():                                # If the guess was legitimate:
+                self.letters = self.eliminate_letters()     # remove the guessed letters from our pool of letters to show the player, since he has already used them
+                self.guess_counter -= 1
+                if self.win_check():                        # Check if win condition is met
+                    self.resolve_win()                      # The win condition was met, we resolve the win and ask the player if he wants to play again
+                    self.play_again()
+                    return
+            else:
+                pass
+        else:                                               # All guesses are used up
+            if self.win_check():                            # The last guess could be correct, so we check
+                self.resolve_win()
+                self.play_again()
+                return
+            else:
+                self.resolve_loss()                         #The last guess was not correct, resolve the loss
+                self.play_again()
+                return
 
     """ ----------- CHECKS ------------- """
     def input_check(self):
         """ Check if word meets requirements """
-        if self.length_check():
-            if self.dictionary_check():
+        if self.length_check(): # Check if the length requirement is met
+            if self.dictionary_check(): # Check if the word is a real english word
                 return True
             else:
-                print("Word not in word list!")
+                print()
+                print(colored("Word not in word list!", 'red'))
                 print()
                 return False
         else:
-            print(f"Word must be exactly {self.letter_count} letters!")
+            print()
+            print(colored(f"Word must be exactly {self.letter_count} letters!", 'red'))
             print()
             return False
 
@@ -78,6 +100,15 @@ class Wordle:
         return False
 
     """ ----------- LOGIC -------------"""
+    def get_input(self):
+        """ Get user input """
+        try:
+            guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
+            return guess_word
+        except KeyboardInterrupt: # Prófa vera fyndinn haha
+            print()
+            print("Ctrl+c huh? You won't get away this easily!")
+
     def print_guess_count(self):
         """ Print the current guess number in the appropriate color """
         if (0.66 * self.max_guesses) <= self.guess_counter <= self.max_guesses:
@@ -98,28 +129,34 @@ class Wordle:
 
     def print_result(self):
         """ Main logic for checking letters and printing the Wordle """
-        already_printed = [] # Safeguard to avoid printing a yellow letter 
-        correct_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
+        already_printed = [] # Keep track of letters that have already been printed, to avoid printing a 
+        green_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
         box = (4 * self.letter_count) + 1
         print("_" * box)
         print("|", end="")
         correct_word = self.correct_word
         guess_word = self.guess_word
-        duplicates = self.duplicate_letter_check()
+        duplicates = self.duplicate_letter_check() # We must know if there are duplicate letters in the word, so that they
 
         for index, letter in enumerate(guess_word):
                 if guess_word[index] == correct_word[index]:
-                    correct_letters_in_current_guess.append(letter)
+                    green_letters_in_current_guess.append(letter)
 
         for index, letter in enumerate(guess_word):
-            
+
             if guess_word[index] == correct_word[index]:
                 print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.append(guess_word[index])
                 if guess_word[index] not in duplicates:
                     already_printed.append(letter)
 
-            elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in correct_letters_in_current_guess:
+            elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in green_letters_in_current_guess:
+                # The letter is yellow, it has not already been printed yellow
+                print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
+                already_printed.append(letter)
+                self.yellow_guessed_letters.append(guess_word[index])
+
+            elif letter in correct_word and letter not in already_printed and letter in duplicates:
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
                 self.yellow_guessed_letters.append(guess_word[index])
@@ -150,7 +187,7 @@ class Wordle:
         return self.letters
 
     def print_letters(self):
-        """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
+        """ Print the available letters for guessing; green if they are correct, yellow if correct but not in correct place """
         print("Available letters: ")
         for row in self.letters: # For each row in the keyboard
             for letter in row: # For each letter in the row
@@ -177,34 +214,6 @@ class Wordle:
             self.play_wordle()
         if play_again_input == "n":
             return
-
-    def play_wordle(self):
-        print('Logged in as: ' + self.profile)
-        self.correct_word = self.generate_word()
-        # self.correct_word = "FLAME"
-        self.guess_counter = self.max_guesses
-        while self.guess_counter != 0:
-            self.print_guess_count()
-            self.guess_word = self.get_input()
-            if self.guess():
-                self.letters = self.eliminate_letters()
-                self.guess_counter -= 1
-                self.print_letters()
-                if self.win_check():
-                    self.resolve_win()
-                    self.play_again()
-                    return
-            else:
-                pass
-        else:
-            if self.win_check():
-                self.resolve_win()
-                self.play_again()
-                return
-            else:
-                self.resolve_loss()
-                self.play_again()
-                return
 
     def resolve_win(self):
         '''Keeps count of wins during current session'''
