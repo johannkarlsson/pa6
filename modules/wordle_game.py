@@ -276,9 +276,9 @@ class Wordle:
 
     def reset_letters(self):
         '''Resets the letters to the original lists when you play again'''
-        self.green_guessed_letters = []
-        self.yellow_guessed_letters = []
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
+        self.green_guessed_letters = set()
+        self.yellow_guessed_letters = set()
 
     def clear_console(self): # This is also in fancy_stuff.py but circular imports problems
         '''HELPER FUNCTION TO CLEAR SCREEN'''
