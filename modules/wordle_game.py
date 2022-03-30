@@ -17,6 +17,7 @@ class Wordle:
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
         self.correct_word = None
         self.guess_word = None
+        self.duplicate_letters_in_correct_word = []
         self.win_count = 0
         self.loss_count = 0
         self.word_list = self.get_word_list()
@@ -33,7 +34,7 @@ class Wordle:
             return words
 
     def generate_word(self):
-        """ Generate a 5 letter wordle from text file """
+        """ Generate a X letter wordle from text file """
         word_list = self.word_list
         word = (random.choice(word_list)).upper()
         return word
@@ -43,6 +44,8 @@ class Wordle:
     def play_wordle(self):
         print('Logged in as: ' + self.profile)
         self.correct_word = self.generate_word()
+        self.correct_word = "MOORS"
+        self.duplicate_letters_in_correct_word = self.duplicate_letter_check() # We must know if there are duplicate letters in the word. Those letters should not be added to the "already printed" list, since we want them to be yellow if guessed.
         self.guess_counter = self.max_guesses
         while self.guess_counter != 0:                      # Until all guesses are used up
             self.print_guess_count()                        # Print the amount of guesses left
@@ -136,7 +139,6 @@ class Wordle:
     def print_result(self):
         """ Main logic for checking letters and printing the Wordle """
         already_printed = [] # Keep track of letters that have already been printed, to avoid counting that letter as a yellow letter
-        duplicates = self.duplicate_letter_check() # We must know if there are duplicate letters in the word. Those letters should not be added to the "already printed" list, since we want them to be yellow if guessed.
         green_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
         box = (4 * self.letter_count) + 1
         print("_" * box)
@@ -153,16 +155,16 @@ class Wordle:
             if guess_word[index] == correct_word[index]:              # 
                 print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.append(guess_word[index])
-                if guess_word[index] not in duplicates:
+                if guess_word[index] not in self.duplicate_letters_in_correct_word:
                     already_printed.append(letter)
 
             elif letter in correct_word and letter not in already_printed and letter not in green_letters_in_current_guess:
-                # The letter is yellow, it has not already been printed yellow
+                # The is correct, and has not already been printed, and should not be printed green later in the process
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
                 self.yellow_guessed_letters.append(guess_word[index])
 
-            elif letter in correct_word and letter not in already_printed and letter in duplicates:
+            elif letter in correct_word and letter not in already_printed and letter in self.duplicate_letters_in_correct_word:
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
                 self.yellow_guessed_letters.append(guess_word[index])
