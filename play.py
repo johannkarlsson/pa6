@@ -1,3 +1,4 @@
+import time
 import os
 from os.path                import exists
 from modules.wordle_game    import Wordle
@@ -16,12 +17,13 @@ class MainMenu:
 
     """ ------------- MAIN MENU -------------"""
     def print_header(self):
-        print(fancy_stuff.header)
+        fancy_stuff.print_header()
 
     def print_main_menu(self):
         print(fancy_stuff.menu_header)
 
     def main_menu(self):
+        self.print_header()
         while True:
             fancy_stuff.clear_console()
             self.print_main_menu()

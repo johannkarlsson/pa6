@@ -6,11 +6,12 @@ import os
 class FancyStuff:
     def __init__(self):
         self.header = """
-----------------------------------
+------------------------------------------------------------
 
-WELCOME TO WORDLE - PYTHON EDITION
-    Authors - Jóhann & Bjössi
-"""
+            WELCOME TO WORDLE - PYTHON EDITION
+                Authors - Jóhann & Bjössi
+                
+------------------------------------------------------------"""
         self.menu_header = """
 ------------------------------------------------------------
 
@@ -39,3 +40,8 @@ WELCOME TO WORDLE - PYTHON EDITION
         if os.name in ('nt', 'dos'):
             command = 'cls'
         os.system(command)
+
+    def print_header(self):
+        print(self.header)
+        time.sleep(3)
+        return

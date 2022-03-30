@@ -1,10 +1,10 @@
-from spellchecker   import SpellChecker
+#from spellchecker   import SpellChecker
 from termcolor      import colored
 from datetime       import datetime
 import os
 import random
 import math
-spell = SpellChecker()
+#spell = SpellChecker()
 
 class Wordle:
     def __init__(self, profile, max_guesses = 5, letter_count = 5):
