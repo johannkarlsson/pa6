@@ -22,13 +22,13 @@ class Wordle:
         self.loss_count = 0
         self.word_list = self.get_word_list()
         self.player_dir = 'player_profiles/'
-        self.wordbank_dir = 'wordlists/'
 
 
     """ ----------- STARTUP ------------- """
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
-        file_name_path = self.wordbank_dir+word_bank
+        directory = "wordlists/"
+        file_name_path = directory+word_bank
         with open(file_name_path, "r") as file:
             allText = file.read()
             words = list(map(str, allText.split()))
