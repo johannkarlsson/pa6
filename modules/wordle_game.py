@@ -148,7 +148,7 @@ class Wordle:
         guess_word = self.guess_word
         duplicates_printed = {}             # A dictionary to keep track of which duplicate letters have been printed and how often.
         
-        for index, letter in enumerate(guess_word):        # Begin by asserting which letter should be green. This is done to avoid letters being printed as yellow, when they should be green later in the word.
+        for index, letter in enumerate(guess_word):        # Begin by determining which letters should be green. This is done to avoid letters being printed as yellow when they should be green later in the word.
                 if guess_word[index] == correct_word[index]:
                     green_letters_in_current_guess.add(letter)
 
@@ -180,7 +180,6 @@ class Wordle:
             # THE LETTER IS A GREY LETTER
             else:
                 print(colored(f" {letter} ", 'white',), end='|')
-
         print()
         print("‾" * box)
     
@@ -193,7 +192,6 @@ class Wordle:
         except KeyError:
             duplicates_printed[letter] = 1                            # this is the first instance of the duplicate, create the key
         return duplicates_printed
-
 
     def duplicate_letter_check(self):
         """ Return a dictionary containing the correct word's duplicate letters and their count """
@@ -242,7 +240,7 @@ class Wordle:
         play_again_input = input("Would you like to play again? (y/n): ").lower()
         if play_again_input == "y":
             self.clear_console()
-            self.reset_letters()
+            self.reset_letters() # Reset the available letters for a fresh game
             self.play_wordle()
         if play_again_input == "n":
             return
