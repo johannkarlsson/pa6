@@ -93,9 +93,15 @@ class Wordle:
         except TypeError:
             print()
 
-    def dictionary_check(self):
+    def dictionary_check2(self):
         """ Check if word is in the english dictionary """
         if self.guess_word == spell.correction(self.guess_word):
+            return True
+        return False
+
+    def dictionary_check(self):
+        """ Check if word is in the english dictionary """
+        if self.guess_word.lower() in self.word_list:
             return True
         return False
 
@@ -129,28 +135,28 @@ class Wordle:
 
     def print_result(self):
         """ Main logic for checking letters and printing the Wordle """
-        already_printed = [] # Keep track of letters that have already been printed, to avoid printing a 
+        already_printed = [] # Keep track of letters that have already been printed, to avoid counting that letter as a yellow letter
+        duplicates = self.duplicate_letter_check() # We must know if there are duplicate letters in the word. Those letters should not be added to the "already printed" list, since we want them to be yellow if guessed.
         green_letters_in_current_guess = [] # Safeguard to avoid printing a yellow letter if the letter is supposed to be green later in the word
         box = (4 * self.letter_count) + 1
         print("_" * box)
         print("|", end="")
         correct_word = self.correct_word
         guess_word = self.guess_word
-        duplicates = self.duplicate_letter_check() # We must know if there are duplicate letters in the word, so that they
-
+        
         for index, letter in enumerate(guess_word):
                 if guess_word[index] == correct_word[index]:
                     green_letters_in_current_guess.append(letter)
 
         for index, letter in enumerate(guess_word):
 
-            if guess_word[index] == correct_word[index]:
+            if guess_word[index] == correct_word[index]:              # 
                 print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.append(guess_word[index])
                 if guess_word[index] not in duplicates:
                     already_printed.append(letter)
 
-            elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in green_letters_in_current_guess:
+            elif letter in correct_word and letter not in already_printed and letter not in green_letters_in_current_guess:
                 # The letter is yellow, it has not already been printed yellow
                 print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
