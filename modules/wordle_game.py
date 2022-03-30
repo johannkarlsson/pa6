@@ -21,13 +21,14 @@ class Wordle:
         self.win_count = 0
         self.loss_count = 0
         self.word_list = self.get_word_list()
+        self.player_dir = 'player_profiles/'
+        self.wordbank_dir = 'wordlists/'
 
 
     """ ----------- STARTUP ------------- """
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
-        directory = "wordlists/"
-        file_name_path = directory+word_bank
+        file_name_path = self.wordbank_dir+word_bank
         with open(file_name_path, "r") as file:
             allText = file.read()
             words = list(map(str, allText.split()))
@@ -240,7 +241,7 @@ class Wordle:
 
     def write_score_to_file(self, w_or_l):
         '''Creates text files to store player scores'''
-        file_name_path = self.get_player_file_name_path()
+        file_name_path = self.player_dir+self.profile+'.txt' # Full path to file
         dt_string = self.get_current_date_time()
         score = self.get_score()
         f = open(file_name_path, 'a')   # Opens file in append mode
@@ -252,18 +253,12 @@ class Wordle:
     def get_current_date_time(self):
         '''Returns current date and time'''
         now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S") # To get the correct format: DD/MM/YYYY HH:MM:SS
         return dt_string
 
-    def get_player_file_name_path(self):
-        '''Returns the full file path of the player profile'''
-        filename = self.profile + '.txt'         # Create full file name
-        directory = "player_profiles/"      # Create full file path
-        file_name_path = directory+filename
-        return file_name_path
-
     def get_score(self):
-        score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word))
+        ''' Just something to score the game '''
+        score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word)) # If you get it on the last guess of a 5 guess, 5 letter game --> ((1 * (1/5) * 1200) * 5) = 1200
         return score
 
     def reset_letters(self):
@@ -272,7 +267,7 @@ class Wordle:
         self.yellow_guessed_letters = []
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
 
-    def clear_console(self):
+    def clear_console(self): # This is also in fancy_stuff.py but circular imports problems
         '''HELPER FUNCTION TO CLEAR SCREEN'''
         command = 'clear'
         if os.name in ('nt', 'dos'):
