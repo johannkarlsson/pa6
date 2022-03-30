@@ -45,7 +45,6 @@ class Wordle:
     def play_wordle(self):
         print('Logged in as: ' + self.profile)
         self.correct_word = self.generate_word()
-        self.correct_word = "AAEEOO"
         self.duplicate_letters_in_correct_word = self.duplicate_letter_check() # We must know if there are duplicate letters in the word. Those letters should not be added to the "already printed" list, since we want them to be yellow if guessed.
         self.guess_counter = self.max_guesses
         while self.guess_counter != 0:                      # Until all guesses are used up
