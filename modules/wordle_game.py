@@ -1,34 +1,19 @@
-# from colorama import init
-
-#from glob import glob
-# from threading      import get_ident
 from spellchecker   import SpellChecker
-# from os.path        import exists
 from termcolor      import colored
 from datetime       import datetime
-# import sys
 import os
-# import time
 import random
 import math
 spell = SpellChecker()
-#TODO
-# Búa til menu, play eða edit CHECK
-# Leyfa logins, profiles CHECK
-# Finna hvernig við score-um leikinn
-# Geyma scores með profile name í txt skjali CHECK
-# Leyfa breytingum á leik, til dæmis 4 stafa orð og bara 3 gisk MAYBE CHECK???
-# Giska rett í síðasta en fæ you lose
+
 class Wordle:
-    def __init__(self, profile, max_guesses = 6, letter_count = 5):
+    def __init__(self, profile, max_guesses = 5, letter_count = 5):
         self.profile = profile
         self.max_guesses = max_guesses
         self.letter_count = letter_count
         self.guess_counter = self.max_guesses
         self.green_guessed_letters = []
         self.yellow_guessed_letters = []
-        self.wrongly_guessed_letters = []
-        # self.letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
         self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
         self.correct_word = None
         self.guess_word = None
@@ -37,7 +22,7 @@ class Wordle:
         self.word_list = self.get_word_list()
 
 
-    """ ----------- VEIT EKKI HVAÐ ÞÚ KALLAR ÞETTA ------------- """
+    """ ----------- STARTUP ------------- """
     def get_word_list(self):
         word_bank = f'wordlist_{self.letter_count}.txt'
         directory = "wordlists/"
@@ -55,8 +40,12 @@ class Wordle:
 
     def get_input(self):
         """ Get user input """
-        guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper() # Er hægt að gera bara upper() hér því þá er breytan alltaf í hástöfum og þarf ekki að declare-a það oftar?
-        return guess_word
+        try:
+            guess_word = input(f"Enter your guess ({self.letter_count} letters): ").upper()
+            return guess_word
+        except KeyboardInterrupt: # Prófa vera fyndinn haha
+            print()
+            print("Ctrl+c huh? You won't get away this easily!")
 
     """ ----------- CHECKS ------------- """
     def input_check(self):
@@ -75,9 +64,12 @@ class Wordle:
 
     def length_check(self):
         """ Check if word is length of letter_count """
-        if len(self.guess_word) == self.letter_count:
-            return True
-        return False
+        try:
+            if len(self.guess_word) == self.letter_count:
+                return True
+            return False
+        except TypeError:
+            print()
 
     def dictionary_check(self):
         """ Check if word is in the english dictionary """
@@ -86,10 +78,8 @@ class Wordle:
         return False
 
     """ ----------- LOGIC -------------"""
-
     def print_guess_count(self):
         """ Print the current guess number in the appropriate color """
-        #global max_guesses
         if (0.66 * self.max_guesses) <= self.guess_counter <= self.max_guesses:
             print(colored(f"GUESSES LEFT = {self.guess_counter}/{self.max_guesses}",'green'))
 
@@ -124,13 +114,13 @@ class Wordle:
         for index, letter in enumerate(guess_word):
             
             if guess_word[index] == correct_word[index]:
-                print(colored(f" {letter} ", 'white', 'on_green'), end = "|")
+                print(colored(f" {letter} ", 'grey', 'on_green'), end = "|")
                 self.green_guessed_letters.append(guess_word[index])
                 if guess_word[index] not in duplicates:
                     already_printed.append(letter)
 
             elif letter in correct_word and letter not in already_printed and letter not in duplicates and letter not in correct_letters_in_current_guess:
-                print(colored(f" {letter} ", 'white', 'on_yellow'), end = "|")
+                print(colored(f" {letter} ", 'grey', 'on_yellow'), end = "|")
                 already_printed.append(letter)
                 self.yellow_guessed_letters.append(guess_word[index])
 
@@ -150,38 +140,20 @@ class Wordle:
                     duplicates.append(char)
         return duplicates
 
-    # def eliminate_letters2(self):
-    #     """ Remove already used letters from the letter list """
-    #     for letter in self.guess_word:
-    #         if letter in self.letters and letter not in self.correct_word:
-    #             self.letters.remove(letter)
-    #     return self.letters
-
     def eliminate_letters(self):
+        ''' Replaces guessed letters with spaces to keep the keyboard layout intact '''
         for letter in self.guess_word:
             for lst in self.letters:
                 if letter in lst and letter not in self.correct_word:
                     index = lst.index(letter)
                     lst[index] = ' '
         return self.letters
-        
-    # def print_letters2(self):
-    #     """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
-    #     print("Available letters: ", end='')
-    #     for letter in self.letters:
-    #         if letter in self.green_guessed_letters:
-    #             print(colored(letter, 'green'), end= ' ')
-    #         elif letter in self.yellow_guessed_letters:
-    #             print(colored(letter, 'yellow'), end= ' ')
-    #         else:
-    #             print(letter, end=' ')
-    #     print()
 
     def print_letters(self):
         """ Print the available letters; green if they are correct, yellow if correct but not in correct place """
         print("Available letters: ")
-        for row in self.letters:
-            for letter in row:
+        for row in self.letters: # For each row in the keyboard
+            for letter in row: # For each letter in the row
                 if letter in self.green_guessed_letters:
                     print(colored(letter, 'green'), end= ' ')
                 elif letter in self.yellow_guessed_letters:
@@ -201,6 +173,7 @@ class Wordle:
         play_again_input = input("Would you like to play again? (y/n): ").lower()
         if play_again_input == "y":
             self.clear_console()
+            self.reset_letters()
             self.play_wordle()
         if play_again_input == "n":
             return
@@ -234,32 +207,53 @@ class Wordle:
                 return
 
     def resolve_win(self):
-                self.win_count += 1
-                print(colored("YOU WON! GOOD JOB!", 'green'))
-                print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file('W') # Senda inn W maybe?
+        '''Keeps count of wins during current session'''
+        self.win_count += 1
+        print(colored("YOU WON! GOOD JOB!", 'green'))
+        print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
+        self.write_score_to_file('W')
     
     def resolve_loss(self):
-                print(colored("YOU LOSE! SORRY", 'red'))
-                self.loss_count += 1
-                print(f"The correct word was '{self.correct_word}'")
-                print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
-                self.write_score_to_file('L') # Senda inn L maybe?
+        '''Keeps count of losses during current session'''
+        self.loss_count += 1
+        print(colored("YOU LOSE! SORRY", 'red'))
+        print(f"The correct word was '{self.correct_word}'")
+        print(f"Current session record: W: {self.win_count} L: {self.loss_count}")
+        self.write_score_to_file('L')
 
     def write_score_to_file(self, w_or_l):
         '''Creates text files to store player scores'''
-        filename = self.profile + '.txt'         # Create full file name
-        directory = "player_profiles/"      # Create full file path
-        file_name_path = directory+filename
-        now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        # score = (self.guess_counter + 1) * 10 * len(self.correct_word)
-        score = math.floor(((self.guess_counter + 1) / (self.max_guesses)) * 100 * len(self.correct_word))
+        file_name_path = self.get_player_file_name_path()
+        dt_string = self.get_current_date_time()
+        score = self.get_score()
         f = open(file_name_path, 'a')   # Opens file in append mode
         if w_or_l == 'W':
             f.write(f"\n*WIN*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: {score}\n-----------------------------------------------\n")
         else:
             f.write(f"\n*LOSS*\n{dt_string}\nGuesses used: {self.max_guesses - self.guess_counter}/{self.max_guesses} Answer: {self.correct_word}\nScore: 0\n-----------------------------------------------\n")
+
+    def get_current_date_time(self):
+        '''Returns current date and time'''
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        return dt_string
+
+    def get_player_file_name_path(self):
+        '''Returns the full file path of the player profile'''
+        filename = self.profile + '.txt'         # Create full file name
+        directory = "player_profiles/"      # Create full file path
+        file_name_path = directory+filename
+        return file_name_path
+
+    def get_score(self):
+        score = math.floor((((self.guess_counter + 1) * (1 / self.max_guesses)) * 1200) * len(self.correct_word))
+        return score
+
+    def reset_letters(self):
+        '''Resets the letters to the original lists when you play again'''
+        self.green_guessed_letters = []
+        self.yellow_guessed_letters = []
+        self.letters = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],[' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],[' ',' ', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']]
 
     def clear_console(self):
         '''HELPER FUNCTION TO CLEAR SCREEN'''
